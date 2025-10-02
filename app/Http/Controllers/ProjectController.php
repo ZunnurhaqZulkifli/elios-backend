@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 
 class ProjectController extends Controller
@@ -13,7 +14,10 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        return inertia('projects/index', [
+            'title' => __('projects.title'),
+            'projects' => ProjectResource::collection(Project::all()),
+        ]);
     }
 
     /**
@@ -21,7 +25,9 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('projects/create', [
+            'title' => __('projects.create_title'),
+        ]);
     }
 
     /**
@@ -29,7 +35,8 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        //
+        $validatedData = $request->validate();
+        Project::create($validatedData);
     }
 
     /**
