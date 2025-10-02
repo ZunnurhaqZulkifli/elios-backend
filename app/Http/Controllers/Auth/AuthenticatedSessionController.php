@@ -18,7 +18,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Login', [
+        return Inertia::render('auth/login', [
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
         ]);
@@ -33,6 +33,18 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        // Create Sanctum token for the authenticated user
+        $user = Auth::user();
+        
+        // Delete previous tokens for this user (optional - keeps only one active token)
+        $user->tokens()->delete();
+        
+        // Create new token
+        $token = $user->createToken('web-session')->plainTextToken;
+        
+        // Store token in session for frontend use
+        $request->session()->put('api_token', $token);
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
@@ -41,6 +53,11 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        // Revoke all tokens for the current user
+        if (Auth::user()) {
+            Auth::user()->tokens()->delete();
+        }
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

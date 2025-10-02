@@ -1,27 +1,35 @@
-import { Head } from '@inertiajs/react';
-import ModernLayout from '@/Layouts/ModernLayout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card';
-import { Button } from '@/Components/ui/button';
-import { Badge } from '@/Components/ui/badge';
-import { 
-    Users, 
-    Activity, 
-    DollarSign, 
+import { Head } from "@inertiajs/react";
+import MasterLayout from "@/layouts/master-layout";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+    Users,
+    Activity,
+    DollarSign,
     TrendingUp,
     ArrowUpRight,
     ArrowDownRight,
     Plus,
     Calendar,
-    Clock
-} from 'lucide-react';
+    Clock,
+} from "lucide-react";
 
 export default function Dashboard() {
     return (
-        <ModernLayout
+        <MasterLayout
             header={
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
+                        <h1 className="text-2xl font-bold tracking-tight">
+                            Dashboard
+                        </h1>
                         <p className="text-muted-foreground">
                             Here's what's happening with your application today.
                         </p>
@@ -33,20 +41,22 @@ export default function Dashboard() {
                         </Button>
                         <Button>
                             <Plus className="mr-2 h-4 w-4" />
-                            New Project
+                            New Task
                         </Button>
                     </div>
                 </div>
             }
         >
             <Head title="Dashboard" />
-            
+
             <div className="space-y-6">
                 {/* Key Metrics */}
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Total Revenue
+                            </CardTitle>
                             <DollarSign className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
@@ -59,7 +69,9 @@ export default function Dashboard() {
                     </Card>
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Subscriptions</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Subscriptions
+                            </CardTitle>
                             <Users className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
@@ -72,7 +84,9 @@ export default function Dashboard() {
                     </Card>
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Sales</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Sales
+                            </CardTitle>
                             <Activity className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
@@ -85,7 +99,9 @@ export default function Dashboard() {
                     </Card>
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Active Now</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Active Now
+                            </CardTitle>
                             <TrendingUp className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
@@ -110,22 +126,57 @@ export default function Dashboard() {
                         <CardContent>
                             <div className="space-y-4">
                                 {[
-                                    { action: 'New user registered', user: 'John Doe', time: '2 minutes ago', type: 'user' },
-                                    { action: 'Payment received', user: 'Jane Smith', time: '10 minutes ago', type: 'payment' },
-                                    { action: 'Profile updated', user: 'Bob Johnson', time: '1 hour ago', type: 'update' },
-                                    { action: 'New order placed', user: 'Alice Brown', time: '2 hours ago', type: 'order' },
-                                    { action: 'Support ticket created', user: 'Charlie Wilson', time: '3 hours ago', type: 'support' },
+                                    {
+                                        action: "New user registered",
+                                        user: "John Doe",
+                                        time: "2 minutes ago",
+                                        type: "user",
+                                    },
+                                    {
+                                        action: "Payment received",
+                                        user: "Jane Smith",
+                                        time: "10 minutes ago",
+                                        type: "payment",
+                                    },
+                                    {
+                                        action: "Profile updated",
+                                        user: "Bob Johnson",
+                                        time: "1 hour ago",
+                                        type: "update",
+                                    },
+                                    {
+                                        action: "New order placed",
+                                        user: "Alice Brown",
+                                        time: "2 hours ago",
+                                        type: "order",
+                                    },
+                                    {
+                                        action: "Support ticket created",
+                                        user: "Charlie Wilson",
+                                        time: "3 hours ago",
+                                        type: "support",
+                                    },
                                 ].map((activity, index) => (
-                                    <div key={index} className="flex items-center space-x-4 p-3 rounded-lg border">
+                                    <div
+                                        key={index}
+                                        className="flex items-center space-x-4 p-3 rounded-lg border"
+                                    >
                                         <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10">
                                             <Activity className="h-4 w-4" />
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-medium">{activity.action}</p>
-                                            <p className="text-sm text-muted-foreground">{activity.user}</p>
+                                            <p className="text-sm font-medium">
+                                                {activity.action}
+                                            </p>
+                                            <p className="text-sm text-muted-foreground">
+                                                {activity.user}
+                                            </p>
                                         </div>
                                         <div className="flex items-center space-x-2">
-                                            <Badge variant="outline" className="text-xs">
+                                            <Badge
+                                                variant="outline"
+                                                className="text-xs"
+                                            >
                                                 {activity.type}
                                             </Badge>
                                             <div className="flex items-center text-xs text-muted-foreground">
@@ -151,29 +202,45 @@ export default function Dashboard() {
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between p-3 border rounded-lg">
                                     <div>
-                                        <p className="text-sm font-medium">Active Users</p>
-                                        <p className="text-2xl font-bold">1,234</p>
+                                        <p className="text-sm font-medium">
+                                            Active Users
+                                        </p>
+                                        <p className="text-2xl font-bold">
+                                            1,234
+                                        </p>
                                     </div>
                                     <Badge variant="default">+12%</Badge>
                                 </div>
                                 <div className="flex items-center justify-between p-3 border rounded-lg">
                                     <div>
-                                        <p className="text-sm font-medium">Total Orders</p>
-                                        <p className="text-2xl font-bold">5,678</p>
+                                        <p className="text-sm font-medium">
+                                            Total Orders
+                                        </p>
+                                        <p className="text-2xl font-bold">
+                                            5,678
+                                        </p>
                                     </div>
                                     <Badge variant="default">+8%</Badge>
                                 </div>
                                 <div className="flex items-center justify-between p-3 border rounded-lg">
                                     <div>
-                                        <p className="text-sm font-medium">Conversion Rate</p>
-                                        <p className="text-2xl font-bold">3.2%</p>
+                                        <p className="text-sm font-medium">
+                                            Conversion Rate
+                                        </p>
+                                        <p className="text-2xl font-bold">
+                                            3.2%
+                                        </p>
                                     </div>
                                     <Badge variant="secondary">-2%</Badge>
                                 </div>
                                 <div className="flex items-center justify-between p-3 border rounded-lg">
                                     <div>
-                                        <p className="text-sm font-medium">Revenue Growth</p>
-                                        <p className="text-2xl font-bold">24.5%</p>
+                                        <p className="text-sm font-medium">
+                                            Revenue Growth
+                                        </p>
+                                        <p className="text-2xl font-bold">
+                                            24.5%
+                                        </p>
                                     </div>
                                     <Badge variant="default">+15%</Badge>
                                 </div>
@@ -182,6 +249,6 @@ export default function Dashboard() {
                     </Card>
                 </div>
             </div>
-        </ModernLayout>
+        </MasterLayout>
     );
 }

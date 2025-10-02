@@ -1,10 +1,8 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -23,7 +21,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return Inertia::render('users/list', [
+        return Inertia::render('users/tanstack-example', [
             'title' => __('users.titles.index'),
             'users' => UserResource::collection(User::all()),
         ]);
@@ -39,7 +37,6 @@ class UsersController extends Controller
         ]);
     }
 
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -49,7 +46,7 @@ class UsersController extends Controller
 
         return Inertia::render('users/edit', [
             'title' => __('users.title'),
-            'model' => UserResource::make($model)
+            'model' => UserResource::make($model),
         ]);
     }
 }
