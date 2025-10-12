@@ -2,10 +2,13 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\Users\UserResource;
+use App\Models\User;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationItem;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -33,6 +36,25 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
+            ->navigationGroups([
+                'Tasks',
+                'Projects',
+                'Management',
+                'Settings',
+                'System Data',
+            ])
+            ->navigationItems([
+
+                // Users
+                // NavigationItem::make('users')
+                //     // ->visible(fn(): bool => User::find(Auth::user()->id)->can('view_any_invitation'))
+                //     ->label('Users')
+                //     ->icon('heroicon-o-users')
+                //     ->group('System Data')
+                //     ->badge(fn(): string => User::where('status', 'active')->count(), Color::Amber)
+                //     ->isActiveWhen(fn(): bool => request()->routeIs('filament.admin.resources.users.*'))
+                //     ->url(fn(): string => UserResource::getUrl('index')),
+            ])
             ->pages([
                 Dashboard::class,
             ])
@@ -54,6 +76,13 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->sidebarWidth('20rem')
+            ->maxContentWidth(maxContentWidth: '7xl')
+            ->sidebarCollapsibleOnDesktop()
+            ->collapsedSidebarWidth('5rem')
+            ->brandName('Z - System')
+            // ->brandLogo(asset('storage/images/ppz_color1.png'))
+            ->brandLogoHeight('4rem');
     }
 }
