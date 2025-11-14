@@ -23,7 +23,7 @@ class ProjectTypeResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static UnitEnum|string|null $navigationGroup = 'Projects';
+    protected static UnitEnum|string|null $navigationGroup = 'System Data';
 
     public static function form(Schema $schema): Schema
     {

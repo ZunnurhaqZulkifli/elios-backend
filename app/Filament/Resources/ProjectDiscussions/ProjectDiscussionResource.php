@@ -19,11 +19,23 @@ class ProjectDiscussionResource extends Resource
 {
     protected static ?string $model = ProjectDiscussion::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chat-bubble-left-right';
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    protected static UnitEnum|string|null $navigationGroup = 'Projects';
+    protected static UnitEnum|string|null $navigationGroup = 'Tasks';
+
+    protected static ?int $navigationSort = 4;
+
+    public static function getModelLabel(): string
+    {
+        return 'Discussion';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Discussions';
+    }   
 
     public static function form(Schema $schema): Schema
     {

@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
-            $table->string('display_name')->nullable();
+            $table->string('long_name')->nullable();
+            $table->string('email')->unique();
             
             // personal info
-            $table->string('title')->default('mr');
-            $table->string('position')->default('employee');
+            $table->string('title')->default(''); // developer, manager, etc.
+            $table->string('position')->default('senior'); // intern, senior, manager, director, executive, etc.
             $table->longText('about')->nullable();
             $table->string('location')->nullable();
             $table->string('phone')->nullable();

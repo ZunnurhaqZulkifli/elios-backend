@@ -16,8 +16,7 @@ class IndividualForm
                     ->required(),
                 TextInput::make('display_name'),
                 TextInput::make('title')
-                    ->required()
-                    ->default('mr'),
+                    ->required(),
                 TextInput::make('position')
                     ->required()
                     ->default('employee'),

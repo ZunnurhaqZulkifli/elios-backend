@@ -23,7 +23,7 @@ class ModuleResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    protected static UnitEnum|string|null $navigationGroup = 'System Data';
+    protected static UnitEnum|string|null $navigationGroup = 'Projects';
 
     public static function form(Schema $schema): Schema
     {

@@ -72,6 +72,7 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
             StateSeeder::class,
             CitySeeder::class,
+            RoleSeeder::class,
 
             // Project Related
             ProjectTypeSeeder::class,

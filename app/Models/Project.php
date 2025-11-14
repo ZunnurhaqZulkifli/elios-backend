@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ProjectStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,6 +32,7 @@ class Project extends Model
         'projected_end_at' => 'datetime',
         'created_at' => 'datetime:Y-m-d H:i:A',
         'updated_at' => 'datetime',
+        'status' => ProjectStatus::class,
     ];
 
     public function category()

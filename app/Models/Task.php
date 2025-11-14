@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TaskStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,6 +28,16 @@ class Task extends Model
         'status',
         'created_at',
         'updated_at',
+    ];
+
+    protected $casts = [
+        'status' => TaskStatusEnum::class,
+        'is_completed' => 'boolean',
+        'suggested_date' => 'datetime',
+        'due_date' => 'datetime',
+        'completed_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function taskable()

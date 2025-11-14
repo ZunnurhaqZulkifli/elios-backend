@@ -25,6 +25,8 @@ class ProjectHistoryResource extends Resource
 
     protected static UnitEnum|string|null $navigationGroup = 'Projects';
 
+    protected static ?int $navigationSort = 3;
+
     public static function form(Schema $schema): Schema
     {
         return ProjectHistoryForm::configure($schema);

@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\ProjectType;
 use App\Models\User;
 
 class ProjectTypePolicy
@@ -17,7 +18,7 @@ class ProjectTypePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, ProjectTypePolicy $type): bool
+    public function view(User $user, ProjectType $type): bool
     {
         return true;
     }
@@ -33,7 +34,7 @@ class ProjectTypePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, ProjectTypePolicy $type): bool
+    public function update(User $user, ProjectType $type): bool
     {
         return true;
     }
@@ -41,7 +42,7 @@ class ProjectTypePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, ProjectTypePolicy $type): bool
+    public function delete(User $user, ProjectType $type): bool
     {
         return true;
     }
@@ -49,7 +50,7 @@ class ProjectTypePolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, ProjectTypePolicy $type): bool
+    public function restore(User $user, ProjectType $type): bool
     {
         return true;
     }
@@ -57,7 +58,7 @@ class ProjectTypePolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, ProjectTypePolicy $type): bool
+    public function forceDelete(User $user, ProjectType $type): bool
     {
         return true;
     }

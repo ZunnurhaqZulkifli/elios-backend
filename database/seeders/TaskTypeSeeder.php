@@ -2,8 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Task;
+use App\Models\TaskType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class TaskTypeSeeder extends Seeder
 {
@@ -12,6 +15,9 @@ class TaskTypeSeeder extends Seeder
      */
     public function run(): void
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        TaskType::truncate();
+
         $types = [
             [
                 'name' => 'Bug', 
@@ -36,7 +42,7 @@ class TaskTypeSeeder extends Seeder
         ];
 
         foreach ($types as $type) {
-            \App\Models\TaskType::create($type);
+            TaskType::create($type);
         }
     }
 }

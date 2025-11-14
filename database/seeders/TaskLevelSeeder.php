@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\TaskLevel;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -28,7 +29,7 @@ class TaskLevelSeeder extends Seeder
         ];
 
         foreach ($levels as $type) {
-            \App\Models\TaskType::create($type);
+            TaskLevel::create($type);
         }
     }
 }

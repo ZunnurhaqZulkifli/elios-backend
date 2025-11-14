@@ -19,11 +19,28 @@ class ProjectBugResource extends Resource
 {
     protected static ?string $model = ProjectBug::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-bug-ant';
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    protected static UnitEnum|string|null $navigationGroup = 'Projects';
+    protected static UnitEnum|string|null $navigationGroup = 'Tasks';
+
+    protected static ?int $navigationSort = 2;
+
+    public static function getModelLabel(): string
+    {
+        return 'Bug';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Bugs';
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::$model::count();
+    }
 
     public static function form(Schema $schema): Schema
     {

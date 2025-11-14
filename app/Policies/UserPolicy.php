@@ -17,7 +17,7 @@ class UserPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, UserPolicy $userPolicy): bool
+    public function view(User $user, User $userPolicy): bool
     {
         return true;
     }
@@ -33,7 +33,7 @@ class UserPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, UserPolicy $userPolicy): bool
+    public function update(User $user, User $userPolicy): bool
     {
         return true;
     }
@@ -41,7 +41,7 @@ class UserPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, UserPolicy $userPolicy): bool
+    public function delete(User $user, User $userPolicy): bool
     {
         return true;
     }
@@ -49,7 +49,7 @@ class UserPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, UserPolicy $userPolicy): bool
+    public function restore(User $user, User $userPolicy): bool
     {
         return true;
     }
@@ -57,7 +57,7 @@ class UserPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, UserPolicy $userPolicy): bool
+    public function forceDelete(User $user, User $userPolicy): bool
     {
         return true;
     }
