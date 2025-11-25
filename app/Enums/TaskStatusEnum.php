@@ -10,35 +10,35 @@ enum TaskStatusEnum: string implements HasLabel, HasColor
 {
     case NEW = 'new';
     case INPROGRESS = 'in_progress';
-    case DISCUSSED = 'discussed';
-    case STAGED = 'staged';
-    case TESTED = 'tested';
+    case DISCUSSION = 'discussion';
+    case STAGING = 'staging';
+    case TESTING = 'testing';
     case COMPLETED = 'completed';
     case CANCELLED = 'cancelled';
 
     public static function options(): array
     {
         return [
-            self::NEW->value => 'New',
+            self::NEW->value        => 'New',
             self::INPROGRESS->value => 'In Progress',
-            self::DISCUSSED->value => 'Discussed',
-            self::STAGED->value => 'Staged',
-            self::TESTED->value => 'Tested',
-            self::COMPLETED->value => 'Completed',
-            self::CANCELLED->value => 'Cancelled',
+            self::DISCUSSION->value => 'Discussion',
+            self::STAGING->value    => 'Staging',
+            self::TESTING->value    => 'Testing',
+            self::COMPLETED->value  => 'Completed',
+            self::CANCELLED->value  => 'Cancelled',
         ];
     }
 
     public function getLabel(): string
     {
         return match ($this) {
-            self::NEW => 'New',
+            self::NEW        => 'New',
             self::INPROGRESS => 'In Progress',
-            self::DISCUSSED => 'Discussed',
-            self::STAGED => 'Staged',
-            self::TESTED => 'Tested',
-            self::COMPLETED => 'Completed',
-            self::CANCELLED => 'Cancelled',
+            self::DISCUSSION => 'Discussion',
+            self::STAGING    => 'Staging',
+            self::TESTING    => 'Testing',
+            self::COMPLETED  => 'Completed',
+            self::CANCELLED  => 'Cancelled',
             default => 'Unknown',
         };
     }
@@ -46,13 +46,13 @@ enum TaskStatusEnum: string implements HasLabel, HasColor
     public function getColor(): array|string|null
     {
         return match ($this) {
-            self::NEW => Color::Fuchsia,
+            self::NEW        => Color::Fuchsia,
             self::INPROGRESS => Color::Amber,
-            self::DISCUSSED => Color::Orange,
-            self::STAGED => Color::Lime,
-            self::TESTED => Color::Emerald,
-            self::COMPLETED => Color::Green,
-            self::CANCELLED => Color::Red,
+            self::DISCUSSION => Color::Orange,
+            self::STAGING    => Color::Lime,
+            self::TESTING    => Color::Emerald,
+            self::COMPLETED  => Color::Green,
+            self::CANCELLED  => Color::Red,
         };
     }
 }

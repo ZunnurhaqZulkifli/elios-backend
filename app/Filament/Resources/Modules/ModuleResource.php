@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Modules;
 
+use App\Enums\TaskStatusEnum;
 use App\Filament\Resources\Modules\Pages\CreateModule;
 use App\Filament\Resources\Modules\Pages\EditModule;
 use App\Filament\Resources\Modules\Pages\ListModules;
@@ -40,6 +41,33 @@ class ModuleResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function mutateFormDataBeforeCreate(array $data)
+    {
+        return self::create($data);
+    }
+
+    public static function create(array $data)
+    {
+        $model = new Module();
+        $model->fill($data);
+        $model->save();
+
+        foreach($model->taskTemplates as $template) {
+            $model->tasks()->create([
+                'title' => $template->title,
+                'assigned_by' => null,
+                'due_date' => $data['estimated_duration'],
+                'status' => TaskStatusEnum::NEW,
+                'progress' => 0,
+                'type_id' => 3, // New
+                'level_id' => 2, // Medium
+                'is_completed' => false,
+            ]);
+        }
+        
+        return $model;
     }
 
     public static function getPages(): array

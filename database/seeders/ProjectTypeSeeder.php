@@ -15,11 +15,11 @@ class ProjectTypeSeeder extends Seeder
         $types = [
             [
                 'name' => 'Work Sands', 
-                'weight' => 5.00, 
+                'weight' => 5.00,
             ],
             [
                 'name' => 'Personal Project', 
-                'weight' => 2.00, 
+                'weight' => 2.00,
             ],
         ];
 

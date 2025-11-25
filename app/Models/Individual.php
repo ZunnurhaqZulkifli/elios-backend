@@ -44,14 +44,15 @@ class Individual extends Model
         return $this->belongsTo(Country::class);
     }
 
-    public function organizationMemberships()
+    public function organization()
     {
-        return $this->hasMany(OrganizationMember::class);
-    }
-
-    public function test()
-    {
-        $distributions = $this->distributions()->whereNull('asnaf_segment_id')->get();
-        $distributions->each(function ($d) { $d->update(['asnaf_segment_id' => 1, 'asnaf_category_id' => 2]); });
+        return $this->hasManyThrough(
+            Organization::class,
+            OrganizationMember::class,
+            'individual_id', // Foreign key on OrganizationIndividual table...
+            'id', // Foreign key on Organization table...
+            'id', // Local key on Individual table...
+            'organization_id' // Local key on OrganizationIndividual table...
+        );
     }
 }

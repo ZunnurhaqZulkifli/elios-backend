@@ -5,8 +5,11 @@ namespace App\Filament\Resources\Projects;
 use App\Filament\Resources\Projects\Pages\CreateProject;
 use App\Filament\Resources\Projects\Pages\EditProject;
 use App\Filament\Resources\Projects\Pages\ListProjects;
+use App\Filament\Resources\Projects\Pages\ViewProject;
+use App\Filament\Resources\Projects\RelationManagers\ModulesRelationManager;
 use App\Filament\Resources\Projects\Schemas\ProjectForm;
 use App\Filament\Resources\Projects\Tables\ProjectsTable;
+use App\Filament\Resources\Projects\RelationManagers\TasksRelationManager;
 use App\Models\Project;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -40,7 +43,8 @@ class ProjectResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            TasksRelationManager::class,
+            ModulesRelationManager::class,
         ];
     }
 
@@ -50,6 +54,7 @@ class ProjectResource extends Resource
             'index' => ListProjects::route('/'),
             'create' => CreateProject::route('/create'),
             'edit' => EditProject::route('/{record}/edit'),
+            'view' => ViewProject::route('/{record}'),
         ];
     }
 }

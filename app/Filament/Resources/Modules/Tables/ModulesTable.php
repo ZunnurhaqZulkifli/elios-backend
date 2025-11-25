@@ -14,37 +14,57 @@ class ModulesTable
     {
         return $table
             ->columns([
+                TextColumn::make('index')
+                    ->label('No. ')
+                    ->rowIndex(),
+
+                TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable(),
+
+                TextColumn::make('status')
+                    ->searchable()
+                    ->badge(),
+
                 TextColumn::make('title')
                     ->searchable(),
-                TextColumn::make('project_id')
-                    ->numeric()
+
+                TextColumn::make('project.title')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
-                TextColumn::make('type_id')
-                    ->numeric()
+
+                TextColumn::make('type.name')
                     ->sortable(),
+
                 TextColumn::make('estimated_duration')
                     ->dateTime()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
+
                 TextColumn::make('total_duration')
                     ->dateTime()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
+
                 TextColumn::make('progress')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('status')
-                    ->searchable(),
+
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
             ])
             ->filters([
                 //

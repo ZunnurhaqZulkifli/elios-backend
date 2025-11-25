@@ -37,7 +37,6 @@ return new class extends Migration
             $table->id();
 
             $table->nullableMorphs('ownerable');
-            $table->foreignId('pic')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('type_id')->nullable()->constrained('project_types')->nullOnDelete();
             $table->foreignId('category_id')->nullable()->constrained('project_categories')->nullOnDelete();
 
@@ -48,7 +47,8 @@ return new class extends Migration
             $table->dateTime('end_at')->nullable();
             $table->dateTime('projected_end_at')->nullable();
 
-            $table->string('status')->default('new'); // new / in-development / completed / on-hold / cancelled
+            $table->string('status')->default('new');
+            $table->string('version')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

@@ -2,7 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Group;
+use App\Models\OrganizationMember;
 use Illuminate\Database\Seeder;
+use PhpParser\Node\Expr\AssignOp\Mod;
 
 class DatabaseSeeder extends Seeder
 {
@@ -77,9 +80,11 @@ class DatabaseSeeder extends Seeder
             // Project Related
             ProjectTypeSeeder::class,
             ProjectCategorySeeder::class,
+            ProjectFrameworkSeeder::class,
 
             // Module Related
             ModuleTypeSeeder::class,
+            ModuleTaskTemplateSeeder::class,
 
             // Task Related
             TaskTypeSeeder::class,
@@ -89,8 +94,13 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             IndividualSeeder::class,
             OrganizationSeeder::class,
+            OrganizationMemberSeeder::class,
+
             ProjectSeeder::class,
-                      
+            GroupSeeder::class,
+            ProjectGroupSeeder::class,
+
+            ModuleSeeder::class,
         ]);
         // DO NOT REMOVE THIS LINES
         $this->command->call('inspire');

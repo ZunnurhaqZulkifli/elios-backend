@@ -2,9 +2,17 @@
 
 namespace App\Filament\Resources\Tasks\Tables;
 
+use App\Actions\Tasks\TaskNew;
+use App\Actions\Tasks\TaskTesting;
+use App\Filament\Tables\Columns\TaskProgressColumn;
+use App\Models\Task;
+use Dom\Text;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Schemas\Components\Livewire;
+use Filament\Tables\Columns\CheckboxColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -18,9 +26,8 @@ class TasksTable
                 TextColumn::make('index')
                     ->label('No. ')
                     ->rowIndex(),
-                    
+
                 TextColumn::make('id')
-                    ->toggleable(isToggledHiddenByDefault: true)
                     ->label('ID')
                     ->sortable(),
 
@@ -48,6 +55,9 @@ class TasksTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
+                TextColumn::make('taskable.project.title')
+                    ->label('Project'),
+
                 TextColumn::make('title')
                     ->searchable(),
 
@@ -68,22 +78,26 @@ class TasksTable
                     ->dateTime()
                     ->sortable(),
 
-                IconColumn::make('is_completed')
-                    ->label('Completed ?')
-                    ->boolean()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('status')
+                    ->badge()
+                    ->searchable(),
+
+                TaskProgressColumn::make('progress_bar')
+                    ->label('Progress'),
+
+                CheckboxColumn::make('is_completed')
+                    ->label('Complete')
+                    ->afterStateUpdated(function ($record, $state) {
+                        if ($state) {
+                            TaskTesting::handle($record);
+                        } else {
+                            TaskNew::handle($record);
+                        }
+                    }),
 
                 TextColumn::make('completed_at')
                     ->dateTime()
                     ->sortable(),
-
-                TextColumn::make('progress')
-                    ->numeric()
-                    ->sortable(),
-
-                TextColumn::make('status')
-                    ->badge()
-                    ->searchable(),
 
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -99,7 +113,9 @@ class TasksTable
             ->filters([
                 //
             ])
+            ->recordAction('view')
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([

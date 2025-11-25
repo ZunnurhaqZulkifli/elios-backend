@@ -6,6 +6,7 @@ use App\Enums\TaskStatusEnum;
 use App\Filament\Resources\Tasks\Pages\CreateTask;
 use App\Filament\Resources\Tasks\Pages\EditTask;
 use App\Filament\Resources\Tasks\Pages\ListTasks;
+use App\Filament\Resources\Tasks\Pages\ViewTask;
 use App\Filament\Resources\Tasks\Schemas\TaskForm;
 use App\Filament\Resources\Tasks\Tables\TasksTable;
 use App\Models\Task;
@@ -29,7 +30,7 @@ class TaskResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-     public static function getModelLabel(): string
+    public static function getModelLabel(): string
     {
         return 'Task';
     }
@@ -74,6 +75,7 @@ class TaskResource extends Resource
         return [
             'index' => ListTasks::route('/'),
             'create' => CreateTask::route('/create'),
+            'view' => ViewTask::route('/{record}'),
             'edit' => EditTask::route('/{record}/edit'),
         ];
     }

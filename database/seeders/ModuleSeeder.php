@@ -12,6 +12,16 @@ class ModuleSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $modules = [
+            [
+                'title'              => '',
+                'project_id'         => '',
+                'type_id'            => '',
+                'estimated_duration' => '',
+                'total_duration'     => '',
+                'progress'           => '',
+                'status'             => '',
+            ],
+        ];
     }
 }

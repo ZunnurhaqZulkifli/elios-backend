@@ -2,11 +2,12 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Dashboard;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages\Dashboard;
+use Filament\Pages\Enums\SubNavigationPosition;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -18,6 +19,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Support\Enums\Width;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -51,14 +53,12 @@ class AdminPanelProvider extends PanelProvider
                 //     ->isActiveWhen(fn(): bool => request()->routeIs('filament.admin.resources.users.*'))
                 //     ->url(fn(): string => UserResource::getUrl('index')),
             ])
-            ->pages([
-                Dashboard::class,
-            ])
+            ->pages([])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
-            ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
-            ])
+            // ->widgets([
+            //     AccountWidget::class,
+            //     FilamentInfoWidget::class,
+            // ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -73,12 +73,15 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+            ->viteTheme('resources/css/filament/admin/theme.css')
+            ->maxContentWidth(Width::Full)
             ->sidebarWidth('20rem')
-            ->maxContentWidth(maxContentWidth: '7xl')
             ->sidebarCollapsibleOnDesktop()
-            ->collapsedSidebarWidth('5rem')
             ->brandName('Z - System')
             // ->brandLogo(asset('storage/images/ppz_color1.png'))
-            ->brandLogoHeight('4rem');
+            ->brandLogoHeight('4rem')
+            ->subNavigationPosition(SubNavigationPosition::Start)
+            ->unsavedChangesAlerts()
+            ;
     }
 }

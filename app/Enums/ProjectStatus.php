@@ -8,39 +8,38 @@ use Filament\Support\Contracts\HasLabel;
 
 enum ProjectStatus : string implements HasLabel, HasColor
 {
-    case NEW = 'new';
-    case DEVELOPMENT = 'development';
-    case ACTIVE = 'active';
-    case COMPLETED = 'completed'; 
+    case UNICORN = 'unicorn';
+    case NEW     = 'new';
+    case DOWN    = 'down';
+    case LIVE    = 'live';
 
     public static function options(): array
     {
         return [
-            self::NEW->value => 'New',
-            self::DEVELOPMENT->value => 'Development',
-            self::ACTIVE->value => 'Active',
-            self::COMPLETED->value => 'Completed',
+            self::UNICORN->value => 'Unicord',
+            self::NEW->value     => 'New',
+            self::DOWN->value    => 'Down',
+            self::LIVE->value    => 'Live',
         ];
     }
 
     public function getLabel(): string
     {
         return match ($this) {
-            self::NEW => 'New',
-            self::DEVELOPMENT => 'Development',
-            self::ACTIVE => 'Active',
-            self::COMPLETED => 'Completed',
-            default => 'Unknown',
+            self::UNICORN => 'Unicorn',
+            self::NEW     => 'New',
+            self::DOWN    => 'Down',
+            self::LIVE    => 'Live',
         };
     }
 
     public function getColor(): array|string|null
     {
         return match ($this) {
-            self::NEW => Color::Purple,
-            self::DEVELOPMENT => Color::Yellow,
-            self::ACTIVE => Color::Green,
-            self::COMPLETED => Color::Blue,
+            self::UNICORN => Color::Emerald,
+            self::NEW     => Color::Purple,
+            self::DOWN    => Color::Red,
+            self::LIVE    => Color::Green,
         };
     }
 }

@@ -2,13 +2,19 @@
 
 namespace App\Models;
 
+use App\Enums\ModuleRole;
+use App\Enums\ModuleStatus;
+use App\Enums\ProjectPhase;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Module extends Model
 {
     /** @use HasFactory<\Database\Factories\ModuleFactory> */
     use HasFactory;
+    use LogsActivity;
 
     protected $fillable = [
         'title',
@@ -20,7 +26,26 @@ class Module extends Model
         'status',
         'created_at',
         'updated_at',
+        'developed_by',
+        'project_phase',
+        'role',
     ];
+
+    protected $casts = [
+        'estimated_duration' => 'datetime',
+        'total_duration' => 'datetime',
+        'created_at' => 'datetime:Y-m-d H:i:A',
+        'updated_at' => 'datetime',
+        'progress' => 'decimal:2',
+        'status' => ModuleStatus::class,
+        'role' => ModuleRole::class,
+        'project_phase' => ProjectPhase::class,
+    ];
+
+    public function developer()
+    {
+        return $this->belongsTo(Individual::class, 'developed_by');
+    }
 
     public function project()
     {
@@ -29,6 +54,25 @@ class Module extends Model
 
     public function type()
     {
-        return $this->hasOne(ModuleType::class, 'type_id');
+        return $this->belongsTo(ModuleType::class);
+    }
+
+    public function taskTemplates()
+    {
+        return $this->hasMany(ModuleTaskTemplate::class, 'module_type_id', 'type_id');
+    }
+
+    public function tasks()
+    {
+        return $this->morphMany(Task::class, 'taskable');
+    }
+
+    /* Activity Logs */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('modules')
+            ->logFillable()
+            ->logOnlyDirty();
     }
 }
