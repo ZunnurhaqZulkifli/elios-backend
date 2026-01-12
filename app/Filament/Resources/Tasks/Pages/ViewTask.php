@@ -2,18 +2,104 @@
 
 namespace App\Filament\Resources\Tasks\Pages;
 
+use App\Actions\Tasks\TaskAction;
+use App\Enums\TaskActionTypeEnum;
+use App\Enums\TaskStatusEnum;
 use App\Filament\Resources\Tasks\TaskResource;
+use App\Livewire\TaskProgressBar;
+use Filament\Actions\Action;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Colors\Color;
 use Filament\Support\Enums\FontWeight;
+use Illuminate\Database\Eloquent\Model;
+use Livewire\Livewire;
+use Filament\Schemas\Components\Livewire as FilamentLivewire;
 
 class ViewTask extends ViewRecord
 {
     protected static string $resource = TaskResource::class;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            EditAction::make(),
+
+            Action::make('do-task')
+                ->visible(fn() => in_array($this->record->status->value, [
+                    'in_progress',
+                    'new',
+                    'completed',
+                ]))
+                ->schema(
+                    fn(Schema $schema) => $schema->components([
+                        Select::make('status')
+                            ->label('Task Status')
+                            ->options(TaskStatusEnum::options())
+                            ->default($this->record->status->value)
+                            ->required(),
+
+                        Textarea::make('remarks')
+                            ->default($this->record->remarks)
+                            ->label('Task Details')
+                            ->disabled()
+                            ->required(),
+
+                        TextInput::make('file_name')
+                            ->hint('UserController.php'),
+
+                        Section::make('Task Action')
+                            ->schema([
+                                TextInput::make('action_title')
+                                    ->label('Action Title')
+                                    ->required(),
+
+                                Select::make('action_type')
+                                    ->label('Action Type')
+                                    ->options(TaskActionTypeEnum::options())
+                                    ->required(),
+
+                                MarkdownEditor::make('action_remarks')
+                                    ->label('Solution / Action Taken')
+                                    ->required(),
+
+                                FileUpload::make('action_attachments')
+                                    ->label('Attachments')
+                                    ->disk('public')
+                                    ->directory('task/attachments')
+                                    ->multiple(),
+                            ])
+                            ->columns(1)
+                    ])
+                )
+                ->action(function ($record, array $data) {
+                    TaskAction::update($record, $data);
+
+                    Notification::make()
+                        ->title('Task updated successfully.')
+                        ->success()
+                        ->send();
+
+                    $this->js("window.location.reload();");
+                })
+                ->label($this->record->status->actionLabel())
+                ->color($this->record->status->actionColor())
+                ->extraAttributes([
+                    'class' => '!text-white [&_svg]:text-white',
+                ])
+                ->icon('heroicon-o-check-circle'),
+        ];
+    }
 
     public function infolist(Schema $schema): Schema
     {
@@ -23,6 +109,9 @@ class ViewTask extends ViewRecord
                     ->description('Main task information')
                     ->icon('heroicon-o-clipboard-document-check')
                     ->schema([
+                        FilamentLivewire::make(TaskProgressBar::class, ['record' => $this->record])
+                            ->columnSpanFull(),
+
                         TextEntry::make('title')
                             ->label('Task Title')
                             ->size('lg')
@@ -47,18 +136,18 @@ class ViewTask extends ViewRecord
                             ->formatStateUsing(fn($state) => $state ? 'Yes' : 'No')
                             ->color(fn($state) => $state ? 'success' : 'gray'),
 
-                        TextEntry::make('progress')
-                            ->label('Progress')
-                            ->suffix('%')
-                            ->badge()
-                            ->color(fn($state) => match (true) {
-                                $state >= 100 => 'success',
-                                $state >= 75 => 'info',
-                                $state >= 50 => 'warning',
-                                default => 'danger',
-                            }),
+                        // TextEntry::make('progress')
+                        //     ->label('Progress')
+                        //     ->suffix('%')
+                        //     ->badge()
+                        //     ->color(fn($state) => match (true) {
+                        //         $state >= 100  => 'success',
+                        //         $state >= 75   => 'info',
+                        //         $state >= 50   => 'warning',
+                        //         default => 'danger',
+                        //     }),
                     ])
-                    ->columns(3)
+                    ->columns(2)
                     ->columnSpan(2),
 
                 Section::make('Assignment')
@@ -82,7 +171,7 @@ class ViewTask extends ViewRecord
                             ->color('info')
                             ->placeholder('Not set'),
 
-                        TextEntry::make('level')
+                        TextEntry::make('level.name')
                             ->label('Priority Level')
                             ->badge()
                             ->color('warning')
@@ -169,12 +258,5 @@ class ViewTask extends ViewRecord
                     ->columns(1)
                     ->columnSpan(2),
             ]);
-    }
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            EditAction::make(),
-        ];
     }
 }

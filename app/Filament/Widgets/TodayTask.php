@@ -82,7 +82,7 @@ class TodayTask extends TableWidget
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                TextColumn::make('taskable.project.title')
+                TextColumn::make('taskable.title')
                     ->label('Project'),
 
                 TextColumn::make('title')
@@ -97,9 +97,9 @@ class TodayTask extends TableWidget
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('suggested_date')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('hours')
+                    ->time()
+                    ->sortable(),
 
                 TextColumn::make('due_date')
                     ->dateTime()
@@ -150,6 +150,7 @@ class TodayTask extends TableWidget
                 BulkActionGroup::make([
                     //
                 ]),
-            ]);
+            ])
+            ->recordUrl(fn(Task $record): string => route('filament.admin.resources.tasks.view', $record));;
     }
 }

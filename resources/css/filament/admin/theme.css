@@ -3,15 +3,27 @@
 @source '../../../../app/Filament/**/*';
 @source '../../../../resources/views/filament/**/*';
 
- 
+
 .progress-bar {
     @apply h-2 w-40 bg-gray-100 dark:bg-gray-800 rounded-full shadow-inner overflow-hidden
 }
- 
+
 .progress-bar-value {
     @apply h-full items-center justify-center text-center bg-success-600 dark:bg-success-500 rounded-r-full shadow-inner text-xs font-bold text-white;
 }
 
 .progress-bar-label {
     @apply h-4 font-bold text-white mb-2;
+}
+
+.progress-bar-2 {
+    @apply h-2 w-full bg-gray-100 dark:bg-gray-800 rounded-full shadow-inner overflow-hidden
+}
+
+.progress-bar-value-2 {
+    @apply h-full items-center justify-center text-center bg-orange-600 dark:bg-orange-500 rounded-r-full shadow-inner text-xs font-bold text-white;
+}
+
+.progress-bar-label-2 {
+    @apply h-4 font-bold text-white mb-4;
 }

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Enums\ProjectPhase;
 use App\Enums\TaskStatusEnum;
-use Attribute;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,9 +19,11 @@ class Task extends Model
     protected $fillable = [
         'taskable_type',
         'taskable_id',
+        'module_id',
         'assigned_by',
         'type_id',
         'level_id',
+        'branch_id',
         'pic',
         'title',
         'remarks',
@@ -33,7 +34,8 @@ class Task extends Model
         'completed_at',
         'progress',
         'status',
-        'project_phase',
+        'phase',
+        'commit_hash',
         'created_at',
         'updated_at',
     ];
@@ -46,8 +48,13 @@ class Task extends Model
         'completed_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-        'project_phase' => ProjectPhase::class,
+        'phase' => ProjectPhase::class,
     ];
+
+    public function actions()
+    {
+        return $this->hasMany(TaskAction::class, 'task_id');
+    }
 
     public function taskable()
     {
@@ -57,6 +64,16 @@ class Task extends Model
     public function assignedBy()
     {
         return $this->belongsTo(User::class, 'assigned_by');
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(ProjectBranch::class, 'branch_id');
+    }
+
+    public function module()
+    {
+        return $this->belongsTo(Module::class);
     }
 
     public function personInCharge()
@@ -86,13 +103,13 @@ class Task extends Model
         $project = CurrentProject::id();
 
         if ($project) {
-            $query->where(function (Builder $q) use ($project) {
+            $query->where(function (Builder $q)  use ($project) {
                 $q->whereHasMorph('taskable', [\App\Models\Project::class], function (Builder $query) use ($project) {
                     $query->where('id', $project);
                 })
-                ->orWhereHasMorph('taskable', [\App\Models\Module::class], function (Builder $query) use ($project) {
-                    $query->where('project_id', $project);
-                });
+                    ->orWhereHasMorph('taskable', [\App\Models\Module::class], function (Builder $query) use ($project) {
+                        $query->where('project_id', $project);
+                    });
             });
         }
 
@@ -103,26 +120,33 @@ class Task extends Model
 
         $pendingTasks = $query->count();
 
-        $colors = array_merge(
-            [0 => 'background-color: #1c2740; color: white; font-weight: 700;'],
-            array_fill(1, 5, 'background-color: #66db00; color: black; font-weight: 700;'),
-            array_fill(6, 10, 'background-color: #EAB308; color: black; font-weight: 700;'),
-            array_fill(11, 30, 'background-color: #c97704; color: black; font-weight: 700;'),
-            array_fill(31, 100, 'background-color: #c90404; color: black; font-weight: 700;')
-        );
-
-        // if($day == 28) {
-        //     dd([
-        //         $query->count(),
-        //     ]);
-        // }
+        $colors = [
+            0 => 'background-color: #1c2740; color: white; font-weight: 700;',
+            ...array_fill(1, 5, 'background-color: #66db00; color: black; font-weight: 700;'),
+            ...array_fill(6, 5, 'background-color: #EAB308; color: black; font-weight: 700;'),
+            ...array_fill(11, 10, 'background-color: #c97704; color: black; font-weight: 700;'),
+            ...array_fill(21, 99, 'background-color: #bf0808; color: black; font-weight: 700;')
+        ];
 
         $data = [
             'count' => $pendingTasks,
-            'color' => $colors[$pendingTasks],
+            'color' => $colors[$pendingTasks] ?? $colors[120],
         ];
 
         return $data;
+    }
+
+    public function scopeDueToday(Builder $query): Builder
+    {
+        $year = now()->year;
+        $month = now()->month;
+        $day = now()->day;
+        $date = \Carbon\Carbon::create($year, $month, $day);
+
+        return $query->whereDate('due_date', $date)
+            ->whereNotIn('status', [
+                TaskStatusEnum::COMPLETED,
+            ]);
     }
 
     /* Activity Logs */

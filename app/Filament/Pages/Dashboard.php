@@ -2,16 +2,22 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Resources\Tasks\TaskResource;
 use App\Filament\Widgets\OutstandingTask;
 use App\Filament\Widgets\TodayTask;
+
 use App\Models\CurrentProject;
+use App\Models\Individual;
 use App\Models\Project;
+use App\Models\Task;
 use BackedEnum;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Schemas\Components\Form;
 use Filament\Schemas\Schema;
+use Illuminate\Container\Attributes\Auth;
 
 class Dashboard extends \Filament\Pages\Dashboard implements HasForms
 {
@@ -27,6 +33,8 @@ class Dashboard extends \Filament\Pages\Dashboard implements HasForms
 
   public $day;
   public $project_option;
+  public $typeable_type;
+  public $typeable_id;
 
   public function mount(): void
   {
@@ -35,10 +43,12 @@ class Dashboard extends \Filament\Pages\Dashboard implements HasForms
 
     $this->form->fill([
       'project_option' => $this->project_option,
+      'typeable_type' => 'App\Models\Project',
+      'typeable_id' => CurrentProject::id(),
     ]);
   }
 
-  public function form(Schema $form): Schema
+  public function selectProject(Schema $form): Schema
   {
     return $form
       ->components([
@@ -46,9 +56,34 @@ class Dashboard extends \Filament\Pages\Dashboard implements HasForms
           ->schema([
             Select::make('project_option')
               ->label('Select Current Project')
+              ->searchable([
+                'title'
+              ])
               ->options(Project::all()->pluck('title', 'id'))
               ->live(),
           ]),
+      ]);
+  }
+
+  public function taskAction(Schema $form): Schema
+  {
+    return $form
+      ->components([
+        Form::make()
+          ->schema([
+              Action::make('create_task')
+                ->label('Create New Task')
+                ->model(TaskResource::getModel())
+                ->fillForm(fn() => [
+                    'taskable_type' => 'App\Models\Project',
+                    'taskable_id' => CurrentProject::id(),
+                    'pic' => Project::find(CurrentProject::id())->ownerable->members->first()->individual->id,
+                ])
+                ->schema(fn(Schema $schema) => TaskResource::form($schema))
+                ->action(fn($data) => Task::create($data))
+                ->modalWidth('4xl'),
+          ])
+          ->columns(2),
       ]);
   }
 
@@ -63,10 +98,7 @@ class Dashboard extends \Filament\Pages\Dashboard implements HasForms
     }
 
     $this->dispatch('project-changed', projectId: $value);
-
-    $this->js("
-      window.location.reload();
-    ");
+    $this->js("window.location.reload();");
   }
 
   protected function getFooterWidgets(): array

@@ -8,6 +8,7 @@ use App\Filament\Resources\Modules\Pages\EditModule;
 use App\Filament\Resources\Modules\Pages\ListModules;
 use App\Filament\Resources\Modules\Schemas\ModuleForm;
 use App\Filament\Resources\Modules\Tables\ModulesTable;
+use App\Models\CurrentProject;
 use App\Models\Module;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -25,6 +26,30 @@ class ModuleResource extends Resource
     protected static ?string $recordTitleAttribute = 'title';
 
     protected static UnitEnum|string|null $navigationGroup = 'Projects';
+
+    public static function getModelLabel(): string
+    {
+        return 'Module';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Modules';
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        $currentProejct = CurrentProject::id();
+
+        return (string) static::$model::whereHas('project', function ($query) use ($currentProejct) {
+            if(!$currentProejct) {
+                return;
+            }
+
+            $query->where('id', $currentProejct);
+        })
+        ->count();
+    }
 
     public static function form(Schema $schema): Schema
     {

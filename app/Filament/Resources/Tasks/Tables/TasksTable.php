@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Tasks\Tables;
 use App\Actions\Tasks\TaskNew;
 use App\Actions\Tasks\TaskTesting;
 use App\Filament\Tables\Columns\TaskProgressColumn;
+use App\Models\CurrentProject;
+use App\Models\Project;
 use App\Models\Task;
 use Dom\Text;
 use Filament\Actions\BulkActionGroup;
@@ -21,7 +23,22 @@ class TasksTable
 {
     public static function configure(Table $table): Table
     {
+        $currentProject = CurrentProject::id();
+        
         return $table
+            ->query(function() use ($currentProject) {
+                $squery = Task::query();
+
+                if(!$currentProject) {
+                    return $squery;
+                }
+                
+                $query = $squery->whereHas('taskable', function ($query) use ($currentProject) {
+                    $query->where('taskable_id', $currentProject);
+                });
+
+                return $query;
+            })
             ->columns([
                 TextColumn::make('index')
                     ->label('No. ')
@@ -55,7 +72,7 @@ class TasksTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                TextColumn::make('taskable.project.title')
+                TextColumn::make('taskable.title')
                     ->label('Project'),
 
                 TextColumn::make('title')
@@ -71,8 +88,7 @@ class TasksTable
 
                 TextColumn::make('suggested_date')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
 
                 TextColumn::make('due_date')
                     ->dateTime()

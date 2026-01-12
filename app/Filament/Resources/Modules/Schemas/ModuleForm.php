@@ -4,6 +4,8 @@ namespace App\Filament\Resources\Modules\Schemas;
 
 use App\Enums\ModuleRole;
 use App\Enums\ModuleStatus;
+use App\Enums\ProjectPhase;
+use App\Models\CurrentProject;
 use App\Models\ModuleType;
 use App\Models\Project;
 use Filament\Forms\Components\DateTimePicker;
@@ -30,7 +32,7 @@ class ModuleForm
                     ->hiddenOn(Operation::Create)
                     ->required(),
 
-                Select::make('type')
+                Select::make('type_id')
                     ->label('Module Type')
                     ->options(
                         function ($livewire) {
@@ -44,8 +46,16 @@ class ModuleForm
 
                                 return $moduleTypes;
                             }
+
+                            $current_project = CurrentProject::id();
                             
-                            return [];
+                            if($current_project) {
+                                return ModuleType::where('framework_id', Project::find($current_project)->framework_id)
+                                    ->pluck('name', 'id')
+                                    ->toArray();
+                            }
+
+                            return ModuleType::pluck('name', 'id')->toArray();
                         }
                     )
                     ->required(),
@@ -64,15 +74,16 @@ class ModuleForm
                     ->default(0.0),
 
                 Select::make('status')
-                    ->options(
-                        ModuleStatus::options()
-                    )
+                    ->options(ModuleStatus::options())
                     ->required(),
 
                 Select::make('role')
-                    ->options(
-                        ModuleRole::options()
-                    )
+                    ->label('Your Role')
+                    ->options(ModuleRole::options())
+                    ->required(),
+
+                Select::make('phase')
+                    ->options(ProjectPhase::options())
                     ->required(),
             ]);
     }

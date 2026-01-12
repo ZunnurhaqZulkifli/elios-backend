@@ -33,3 +33,8 @@
   - (input) => set the project details
     1. Company Owner ( PPZ / MAIWP )
     2. Git Repository
+
+
+<!-- Make tasks reflect on phases -->
+
+

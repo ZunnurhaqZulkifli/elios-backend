@@ -27,20 +27,25 @@ class Module extends Model
         'created_at',
         'updated_at',
         'developed_by',
-        'project_phase',
+        'phase',
         'role',
     ];
 
     protected $casts = [
         'estimated_duration' => 'datetime',
-        'total_duration' => 'datetime',
-        'created_at' => 'datetime:Y-m-d H:i:A',
-        'updated_at' => 'datetime',
-        'progress' => 'decimal:2',
-        'status' => ModuleStatus::class,
-        'role' => ModuleRole::class,
-        'project_phase' => ProjectPhase::class,
+        'total_duration'     => 'datetime',
+        'created_at'         => 'datetime:Y-m-d H:i:A',
+        'updated_at'         => 'datetime',
+        'progress'           => 'decimal:2',
+        'status'             => ModuleStatus::class,
+        'role'               => ModuleRole::class,
+        'phase'              => ProjectPhase::class,
     ];
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 
     public function developer()
     {
@@ -60,11 +65,6 @@ class Module extends Model
     public function taskTemplates()
     {
         return $this->hasMany(ModuleTaskTemplate::class, 'module_type_id', 'type_id');
-    }
-
-    public function tasks()
-    {
-        return $this->morphMany(Task::class, 'taskable');
     }
 
     /* Activity Logs */

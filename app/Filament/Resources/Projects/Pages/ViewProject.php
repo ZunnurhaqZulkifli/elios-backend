@@ -5,11 +5,8 @@ namespace App\Filament\Resources\Projects\Pages;
 use App\Filament\Resources\Projects\ProjectResource;
 use App\Filament\Resources\Projects\RelationManagers\ModulesRelationManager;
 use App\Filament\Resources\Projects\RelationManagers\TasksRelationManager;
+use Filament\Actions\Action;
 use Filament\Actions\EditAction;
-use Filament\Infolists\Components\Grid;
-use Filament\Infolists\Components\Group;
-use Filament\Infolists\Components\Section;
-use Filament\Infolists\Components\Split;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Schemas\Components\Grid as ComponentsGrid;
@@ -26,6 +23,14 @@ class ViewProject extends ViewRecord
         return $schema
             ->components([
                 ComponentsSection::make('Project Overview')
+                    ->headerActions([
+                        Action::make('phase')
+                            ->badge()
+                            ->disabled()
+                            ->label(function ($record) {
+                                return $record->phase->getLabel();
+                            }),
+                    ])
                     ->description('Key information about this project')
                     ->icon('heroicon-o-information-circle')
                     ->schema([

@@ -7,8 +7,10 @@ use App\Filament\Resources\Tasks\Pages\CreateTask;
 use App\Filament\Resources\Tasks\Pages\EditTask;
 use App\Filament\Resources\Tasks\Pages\ListTasks;
 use App\Filament\Resources\Tasks\Pages\ViewTask;
+use App\Filament\Resources\Tasks\RelationManagers\ActionsRelationManager;
 use App\Filament\Resources\Tasks\Schemas\TaskForm;
 use App\Filament\Resources\Tasks\Tables\TasksTable;
+use App\Models\CurrentProject;
 use App\Models\Task;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -42,10 +44,20 @@ class TaskResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
+        $currentProejct = CurrentProject::id();
+
         return (string) static::$model::whereNotIn('status', [
             TaskStatusEnum::COMPLETED->value,
             TaskStatusEnum::CANCELLED->value,
-        ])->count();
+        ])
+        ->whereHas('taskable', function ($query) use ($currentProejct) {
+            if(!$currentProejct) {
+                return;
+            }
+
+            $query->where('taskable_id', $currentProejct);
+        })
+        ->count();
     }
 
     public static function getNavigationBadgeColor(): string|array|null
@@ -66,7 +78,7 @@ class TaskResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ActionsRelationManager::class,
         ];
     }
 

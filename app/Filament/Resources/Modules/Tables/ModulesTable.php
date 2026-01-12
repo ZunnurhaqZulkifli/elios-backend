@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Modules\Tables;
 
+use App\Models\CurrentProject;
+use App\Models\Module;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -12,7 +14,22 @@ class ModulesTable
 {
     public static function configure(Table $table): Table
     {
+        $currentProject = CurrentProject::id();
+
         return $table
+            ->query(function() use ($currentProject) {
+                $squery = Module::query();
+
+                if(!$currentProject) {
+                    return $squery;
+                }
+
+                $query = $squery->whereHas('project', function ($query) use ($currentProject) {
+                    $query->where('id', $currentProject);
+                });
+
+                return $query;
+            })
             ->columns([
                 TextColumn::make('index')
                     ->label('No. ')

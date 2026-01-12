@@ -36,15 +36,15 @@ class Project extends Model
     ];
 
     protected $casts = [
-        'start_at' => 'datetime:Y-m-d',
-        'end_at' => 'datetime:Y-m-d',
+        'start_at'         => 'datetime:Y-m-d',
+        'end_at'           => 'datetime:Y-m-d',
         'projected_end_at' => 'datetime',
-        'created_at' => 'datetime:Y-m-d H:i:A',
-        'updated_at' => 'datetime',
-        'status' => ProjectStatus::class,
-        'phase' => ProjectPhase::class,
-        'category_id' => 'integer',
-        'type_id' => 'integer',
+        'created_at'       => 'datetime:Y-m-d H:i:A',
+        'updated_at'       => 'datetime',
+        'status'           => ProjectStatus::class,
+        'phase'            => ProjectPhase::class,
+        'category_id'      => 'integer',
+        'type_id'          => 'integer',
     ];
 
     public function tasks()
@@ -62,6 +62,11 @@ class Project extends Model
                     })
                     ->where('taskable_type', Module::class);
             });
+    }
+
+    public function branches()
+    {
+        return $this->hasMany(ProjectBranch::class);
     }
 
     public function getAllTasks()
@@ -89,9 +94,10 @@ class Project extends Model
         return $this->hasOne(ProjectDetail::class);
     }
 
-    public function history()
+    public function histories()
     {
-        return $this->hasMany(ProjectHistory::class);
+        return $this->hasMany(ProjectHistory::class, 'historable_id')
+            ->where('historable_type', Project::class);
     }
 
     public function modules()

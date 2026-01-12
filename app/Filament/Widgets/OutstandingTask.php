@@ -45,9 +45,9 @@ class OutstandingTask extends TableWidget
                 $q->whereHasMorph('taskable', [\App\Models\Project::class], function (Builder $query) {
                     $query->where('id', $this->project_id);
                 })
-                ->orWhereHasMorph('taskable', [\App\Models\Module::class], function (Builder $query) {
-                    $query->where('project_id', $this->project_id);
-                });
+                    ->orWhereHasMorph('taskable', [\App\Models\Module::class], function (Builder $query) {
+                        $query->where('project_id', $this->project_id);
+                    });
             });
         }
 
@@ -86,7 +86,7 @@ class OutstandingTask extends TableWidget
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                TextColumn::make('taskable.project.title')
+                TextColumn::make('taskable.title')
                     ->label('Project'),
 
                 TextColumn::make('title')
@@ -153,6 +153,7 @@ class OutstandingTask extends TableWidget
                 BulkActionGroup::make([
                     //
                 ]),
-            ]);
+            ])
+            ->recordUrl(fn(Task $record): string => route('filament.admin.resources.tasks.view', $record));
     }
 }
