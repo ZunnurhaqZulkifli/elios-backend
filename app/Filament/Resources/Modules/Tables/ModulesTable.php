@@ -11,6 +11,8 @@ use Filament\Actions\ViewAction;
 use App\Models\CurrentProject;
 use Filament\Tables\Table;
 use App\Models\Module;
+use Dom\Text;
+use Filament\Support\Colors\Color;
 
 class ModulesTable
 {
@@ -67,6 +69,11 @@ class ModulesTable
 
                 TaskProgressColumn::make('progress_bar')
                     ->label('Progress'),
+
+                TextColumn::make('task_count')
+                    ->label('Task Count')
+                    ->badge()
+                    ->color(Color::Emerald),
 
                 TextColumn::make('created_at')
                     ->dateTime()

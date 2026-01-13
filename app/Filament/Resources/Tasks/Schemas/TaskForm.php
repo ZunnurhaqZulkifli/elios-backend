@@ -14,6 +14,7 @@ use App\Models\TaskLevel;
 use App\Models\TaskType;
 use App\Models\User;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MorphToSelect;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -69,6 +70,15 @@ class TaskForm
                     ->columnSpanFull(),
 
                 Textarea::make('remarks')
+                    ->columnSpanFull(),
+
+                FileUpload::make('attachments')
+                    ->openable()
+                    ->label('Attachments')
+                    ->multiple()
+                    ->disk('public')
+                    ->directory('task/attachments')
+                    ->deletable(true)
                     ->columnSpanFull(),
 
                 Select::make('pic')

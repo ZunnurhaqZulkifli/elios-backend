@@ -6,6 +6,7 @@ use App\Enums\ModuleRoleEnum;
 use App\Enums\ModuleStatusEnum;
 use App\Enums\ProjectPhaseEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -65,6 +66,13 @@ class Module extends Model
     public function taskTemplates()
     {
         return $this->hasMany(ModuleTaskTemplate::class, 'module_type_id', 'type_id');
+    }
+
+    public function taskCount() : Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->tasks()->count(),
+        );
     }
 
     /* Activity Logs */

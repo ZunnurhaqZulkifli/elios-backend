@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Tasks\RelationManagers;
 
+use App\Actions\Modules\ModuleCalculateProgess;
+use App\Actions\Tasks\TaskCalculateProgess;
 use App\Filament\Resources\Tasks\TaskResource;
 use App\Livewire\TaskActionDetails;
 use App\Livewire\TaskActionDocuments;
@@ -27,7 +29,8 @@ class ActionsRelationManager extends RelationManager
     {
         return $table
             ->query(
-                TaskAction::query()->where('task_id', $this->getOwnerRecord()->id)
+                TaskAction::query()
+                    ->where('task_id', $this->getOwnerRecord()->id)
             )
             ->columns([
                 TextColumn::make('index')
@@ -86,6 +89,9 @@ class ActionsRelationManager extends RelationManager
                     ->requiresConfirmation()
                     ->action(function(TaskAction $record) {
                         $record->delete();
+
+                        $module = $this->getOwnerRecord()->module;
+                        TaskCalculateProgess::excecute($module);
 
                         Notification::make()
                             ->title('Task Action Deleted')

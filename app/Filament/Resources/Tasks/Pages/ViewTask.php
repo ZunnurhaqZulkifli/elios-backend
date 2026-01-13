@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Tasks\Pages;
 
-use App\Actions\Tasks\TaskAction;
 use App\Enums\TaskActionTypeEnum;
 use App\Enums\TaskStatusEnum;
 use App\Filament\Resources\Tasks\TaskResource;
@@ -24,8 +23,10 @@ use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\FontWeight;
 use Illuminate\Database\Eloquent\Model;
-use Livewire\Livewire;
+use Filament\Support\Enums\Width;
+use Illuminate\Support\Facades\Storage;
 use Filament\Schemas\Components\Livewire as FilamentLivewire;
+use Joaopaulolndev\FilamentPdfViewer\Forms\Components\PdfViewerField;
 
 class ViewTask extends ViewRecord
 {
@@ -38,6 +39,7 @@ class ViewTask extends ViewRecord
 
 
             Action::make('do-task')
+                ->modalWidth(Width::ScreenExtraLarge)
                 ->visible(fn() => in_array($this->record->status->value, [
                     'in_progress',
                     'new',
@@ -56,6 +58,38 @@ class ViewTask extends ViewRecord
                             ->label('Task Details')
                             ->disabled()
                             ->required(),
+
+                        Section::make('Task Attachments')
+                            ->icon('heroicon-o-paper-clip')
+                            ->schema(function () {
+                                $data = [];
+
+                                $documents = $this->record->attachments;
+                                $count = count($documents ?? []);
+
+                                if ($documents == null) {
+                                    return [
+                                        TextEntry::make('document')
+                                            ->label('Tiada Dokumen')
+                                            ->columnSpanFull(),
+                                    ];
+                                } else {
+                                    foreach ($documents as $key => $document) {
+                                        $data[] =
+                                            PdfViewerField::make('attachment ' . $key)
+                                            ->label('Attachment ' . ($key + 1))
+                                            ->fileUrl(Storage::url($document))
+                                            ->minHeight('20svh')
+                                            ->lazy();
+                                    }
+                                }
+
+                                return [
+                                    Grid::make($count > 1 ? 2 : 1)->schema($data)
+                                ];
+                            })
+                            ->columns(1)
+                            ->columnSpanFull(),
 
                         TextInput::make('file_name')
                             ->hint('UserController.php'),
@@ -84,8 +118,10 @@ class ViewTask extends ViewRecord
                             ->columns(1)
                     ])
                 )
+                ->modalSubmitActionLabel('Submit Task Action')
+                ->requiresConfirmation()
                 ->action(function ($record, array $data) {
-                    TaskAction::update($record, $data);
+                    // TaskAction::update($record, $data);
 
                     Notification::make()
                         ->title('Task updated successfully.')
@@ -161,6 +197,38 @@ class ViewTask extends ViewRecord
                             ->badge()
                             ->formatStateUsing(fn($state) => $state ? 'Yes' : 'No')
                             ->color(fn($state) => $state ? 'success' : 'gray'),
+
+                        Section::make('Attachments')
+                            ->icon('heroicon-o-paper-clip')
+                            ->schema(function () {
+                                $data = [];
+
+                                $documents = $this->record->attachments;
+                                $count = count($documents ?? []);
+
+                                if ($documents == null) {
+                                    return [
+                                        TextEntry::make('document')
+                                            ->label('Tiada Dokumen')
+                                            ->columnSpanFull(),
+                                    ];
+                                } else {
+                                    foreach ($documents as $key => $document) {
+                                        $data[] = 
+                                            PdfViewerField::make('attachment ' . $key)
+                                                ->label('Attachment ' . ($key + 1))
+                                                ->fileUrl(Storage::url($document))
+                                                ->minHeight('20svh')
+                                                ->lazy();
+                                    }
+                                }
+
+                                return [
+                                    Grid::make($count > 1 ? 2 : 1)->schema($data)
+                                ];
+                            })
+                            ->columns(1)
+                            ->columnSpanFull(),
 
                         // TextEntry::make('progress')
                         //     ->label('Progress')

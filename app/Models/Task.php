@@ -36,19 +36,21 @@ class Task extends Model
         'status',
         'phase',
         'commit_hash',
+        'attachments',
         'created_at',
         'updated_at',
     ];
 
     protected $casts = [
-        'status' => TaskStatusEnum::class,
-        'is_completed' => 'boolean',
+        'status'         => TaskStatusEnum::class,
+        'is_completed'   => 'boolean',
         'suggested_date' => 'datetime',
-        'due_date' => 'datetime',
-        'completed_at' => 'datetime',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'phase' => ProjectPhaseEnum::class,
+        'due_date'       => 'datetime',
+        'completed_at'   => 'datetime',
+        'created_at'     => 'datetime',
+        'updated_at'     => 'datetime',
+        'attachments'    => 'array',
+        'phase'          => ProjectPhaseEnum::class,
     ];
 
     public function actions()
