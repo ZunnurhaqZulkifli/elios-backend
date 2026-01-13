@@ -10,7 +10,7 @@ class ModuleCalculateProgess
 {
     public static function excecute(Project $project)
     {
-        $total = DB::transaction(function () use ($project) {
+        DB::transaction(function () use ($project) {
             foreach ($project->modules as $module) {
                 $module->update([
                     'progress' => TaskCalculateProgess::excecute($module),
@@ -18,6 +18,6 @@ class ModuleCalculateProgess
             }
         });
 
-        return round($total, 2);
+        return $project;
     }
 }
