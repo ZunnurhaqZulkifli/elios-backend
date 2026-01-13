@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Tasks\Pages;
 
+use App\Actions\Tasks\TaskAction;
 use App\Enums\TaskActionTypeEnum;
 use App\Enums\TaskStatusEnum;
 use App\Filament\Resources\Tasks\TaskResource;
@@ -40,11 +41,6 @@ class ViewTask extends ViewRecord
 
             Action::make('do-task')
                 ->modalWidth(Width::ScreenExtraLarge)
-                ->visible(fn() => in_array($this->record->status->value, [
-                    'in_progress',
-                    'new',
-                    'completed',
-                ]))
                 ->schema(
                     fn(Schema $schema) => $schema->components([
                         Select::make('status')
@@ -121,7 +117,7 @@ class ViewTask extends ViewRecord
                 ->modalSubmitActionLabel('Submit Task Action')
                 ->requiresConfirmation()
                 ->action(function ($record, array $data) {
-                    // TaskAction::update($record, $data);
+                    TaskAction::update($record, $data);
 
                     Notification::make()
                         ->title('Task updated successfully.')
