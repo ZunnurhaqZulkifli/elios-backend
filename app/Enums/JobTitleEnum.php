@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum JobTitle : string
+enum JobTitleEnum : string
 {
     case DEVELOPER = 'developer';
     case INTERN = 'intern';

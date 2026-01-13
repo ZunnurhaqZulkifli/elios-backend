@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\Projects\Schemas;
 
-use App\Enums\ProjectPhase;
-use App\Enums\ProjectStatus;
+use App\Enums\ProjectPhaseEnum;
+use App\Enums\ProjectStatusEnum;
 use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\User;
@@ -88,11 +88,11 @@ class ProjectForm
                 DateTimePicker::make('projected_end_at'),
 
                 Select::make('status')
-                    ->options(ProjectStatus::options())
+                    ->options(ProjectStatusEnum::options())
                     ->required(),
 
                 Select::make('phase')
-                    ->options(ProjectPhase::options())
+                    ->options(ProjectPhaseEnum::options())
                     ->required(),
                 
                 TextInput::make('git_url')

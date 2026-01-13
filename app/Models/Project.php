@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Enums\ProjectPhase;
-use App\Enums\ProjectStatus;
+use App\Enums\ProjectPhaseEnum;
+use App\Enums\ProjectStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
@@ -41,8 +41,8 @@ class Project extends Model
         'projected_end_at' => 'datetime',
         'created_at'       => 'datetime:Y-m-d H:i:A',
         'updated_at'       => 'datetime',
-        'status'           => ProjectStatus::class,
-        'phase'            => ProjectPhase::class,
+        'status'           => ProjectStatusEnum::class,
+        'phase'            => ProjectPhaseEnum::class,
         'category_id'      => 'integer',
         'type_id'          => 'integer',
     ];
@@ -117,7 +117,7 @@ class Project extends Model
 
     public function owner()
     {
-        return $this->belongsTo(User::class, 'pic');
+        return $this->belongsTo(Individual::class, 'pic');
     }
 
     public function type()

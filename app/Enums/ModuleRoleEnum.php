@@ -6,7 +6,7 @@ use Filament\Support\Colors\Color;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum ModuleRole : string implements HasLabel, HasColor
+enum ModuleRoleEnum : string implements HasLabel, HasColor
 {
     case DEVELOPER = 'developer';
     case MAINTAINER = 'maintainer';

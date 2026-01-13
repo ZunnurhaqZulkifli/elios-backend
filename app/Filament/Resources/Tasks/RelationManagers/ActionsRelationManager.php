@@ -9,6 +9,7 @@ use App\Models\TaskAction;
 use Dom\Text;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -77,7 +78,24 @@ class ActionsRelationManager extends RelationManager
                                 ->lazy()
                         ];
                     })
-                    ->icon('heroicon-o-paper-clip'),
+                    ->icon('heroicon-o-paper-clip')
+                    ->color('secondary'),
+
+                Action::make('delete')
+                    ->label('Delete')
+                    ->requiresConfirmation()
+                    ->action(function(TaskAction $record) {
+                        $record->delete();
+
+                        Notification::make()
+                            ->title('Task Action Deleted')
+                            ->success()
+                            ->send();
+
+                        $this->js('window.location.reload()');
+                    })
+                    ->icon('heroicon-o-trash')
+                    ->color('danger'),
             ]);
     }
 }

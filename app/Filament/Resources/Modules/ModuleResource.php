@@ -6,8 +6,10 @@ use App\Enums\TaskStatusEnum;
 use App\Filament\Resources\Modules\Pages\CreateModule;
 use App\Filament\Resources\Modules\Pages\EditModule;
 use App\Filament\Resources\Modules\Pages\ListModules;
+use App\Filament\Resources\Modules\Pages\ViewModule;
 use App\Filament\Resources\Modules\Schemas\ModuleForm;
 use App\Filament\Resources\Modules\Tables\ModulesTable;
+use App\Filament\Resources\Tasks\RelationManagers\TasksRelationManager;
 use App\Models\CurrentProject;
 use App\Models\Module;
 use BackedEnum;
@@ -64,7 +66,7 @@ class ModuleResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            TasksRelationManager::class
         ];
     }
 
@@ -99,6 +101,7 @@ class ModuleResource extends Resource
     {
         return [
             'index' => ListModules::route('/'),
+            'view' => ViewModule::route('/{record}'),
             'create' => CreateModule::route('/create'),
             'edit' => EditModule::route('/{record}/edit'),
         ];

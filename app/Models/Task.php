@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\ProjectPhase;
+use App\Enums\ProjectPhaseEnum;
 use App\Enums\TaskStatusEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -48,7 +48,7 @@ class Task extends Model
         'completed_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-        'phase' => ProjectPhase::class,
+        'phase' => ProjectPhaseEnum::class,
     ];
 
     public function actions()

@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\Modules\Schemas;
 
-use App\Enums\ModuleRole;
-use App\Enums\ModuleStatus;
-use App\Enums\ProjectPhase;
+use App\Enums\ModuleRoleEnum;
+use App\Enums\ModuleStatusEnum;
+use App\Enums\ProjectPhaseEnum;
 use App\Models\CurrentProject;
 use App\Models\ModuleType;
 use App\Models\Project;
@@ -74,16 +74,16 @@ class ModuleForm
                     ->default(0.0),
 
                 Select::make('status')
-                    ->options(ModuleStatus::options())
+                    ->options(ModuleStatusEnum::options())
                     ->required(),
 
                 Select::make('role')
                     ->label('Your Role')
-                    ->options(ModuleRole::options())
+                    ->options(ModuleRoleEnum::options())
                     ->required(),
 
                 Select::make('phase')
-                    ->options(ProjectPhase::options())
+                    ->options(ProjectPhaseEnum::options())
                     ->required(),
             ]);
     }

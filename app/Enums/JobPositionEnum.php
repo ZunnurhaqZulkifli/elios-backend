@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum JobPosition : string
+enum JobPositionEnum : string
 {
     case INTERN = 'intern';
     case JUNIOR = 'junior';

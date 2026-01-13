@@ -7,6 +7,7 @@ use App\Models\ProjectHistory;
 use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class TaskAction
 {
@@ -22,7 +23,7 @@ class TaskAction
 
 
 			if($task->taskable) {
-				$task->taskable->histories()->create([
+				ProjectHistory::create([
 					'historable_type' => Task::class,
 					'historable_id'   => $task->id,
 					'user_id'         => Auth::user()->id,

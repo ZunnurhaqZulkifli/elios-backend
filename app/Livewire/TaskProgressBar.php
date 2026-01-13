@@ -2,12 +2,12 @@
 
 namespace App\Livewire;
 
-use App\Models\Task;
+use Illuminate\Database\Eloquent\Model;
 use Livewire\Component;
 
 class TaskProgressBar extends Component
 {
-    public Task $record;
+    public Model $record;
 
     public function getProgressValue(): int
     {

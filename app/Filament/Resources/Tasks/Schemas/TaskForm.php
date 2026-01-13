@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Tasks\Schemas;
 
 use App\Actions\Tasks\TaskSuggestDate;
-use App\Enums\ProjectPhase;
+use App\Enums\ProjectPhaseEnum;
 use App\Enums\TaskStatusEnum;
 use App\Filament\Resources\ProjectBranches\ProjectBranchResource;
 use App\Models\Individual;
@@ -164,7 +164,7 @@ class TaskForm
 
                 Select::make('phase')
                     ->label('Project Phase')
-                    ->options(ProjectPhase::options()),
+                    ->options(ProjectPhaseEnum::options()),
 
                 Select::make('branch_id')
                     ->label('Project Branch')

@@ -73,9 +73,12 @@ class TasksTable
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('taskable.title')
-                    ->label('Project'),
+                    ->label('Project / Owner')
+                    ->description(fn (Task $record) => $record->taskable->ownerable->name),
 
                 TextColumn::make('title')
+                    ->label('Title / PIC')
+                    ->description(fn (Task $record) => $record->taskable?->owner?->name ?? '-')
                     ->searchable(),
 
                 TextColumn::make('file_name')

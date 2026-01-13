@@ -6,7 +6,7 @@ use Filament\Support\Colors\Color;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum ProjectStatus : string implements HasLabel, HasColor
+enum ProjectStatusEnum : string implements HasLabel, HasColor
 {
     case UNICORN = 'unicorn';
     case NEW     = 'new';

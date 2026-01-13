@@ -8,6 +8,7 @@ use App\Enums\TaskStatusEnum;
 use App\Filament\Resources\Tasks\TaskResource;
 use App\Livewire\TaskProgressBar;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
@@ -34,6 +35,7 @@ class ViewTask extends ViewRecord
     {
         return [
             EditAction::make(),
+
 
             Action::make('do-task')
                 ->visible(fn() => in_array($this->record->status->value, [
@@ -98,6 +100,30 @@ class ViewTask extends ViewRecord
                     'class' => '!text-white [&_svg]:text-white',
                 ])
                 ->icon('heroicon-o-check-circle'),
+
+            ActionGroup::make([
+                Action::make('view-project')
+                    ->label('View Project')
+                    ->url(fn(Model $record) => $record->taskable ? route('filament.admin.resources.projects.view', $record->taskable_id) : '#')
+                    ->disabled(fn(Model $record) => !$record->taskable)
+                    ->visible(fn(Model $record) => $record->taskable_id !== null && $record->taskable_type === \App\Models\Project::class)
+                    ->icon('heroicon-o-link')
+                    ->color(Color::Amber)
+                    ->extraAttributes([
+                        'class' => '!text-white [&_svg]:text-white',
+                    ]),
+
+                Action::make('view-module')
+                    ->label('View Module')
+                    ->url(fn(Model $record) => $record->taskable ? route('filament.admin.resources.modules.view', $record->module_id) : '#')
+                    ->disabled(fn(Model $record) => !$record->taskable)
+                    ->visible(fn(Model $record) => $record->module_id !== null)
+                    ->icon('heroicon-o-link')
+                    ->color(Color::Green)
+                    ->extraAttributes([
+                        'class' => '!text-white [&_svg]:text-white',
+                    ]),
+            ]),
         ];
     }
 
@@ -239,6 +265,7 @@ class ViewTask extends ViewRecord
                     ->columnSpan(1),
 
                 Section::make('Related Information')
+                    ->collapsed()
                     ->icon('heroicon-o-link')
                     ->schema([
                         TextEntry::make('taskable_type')

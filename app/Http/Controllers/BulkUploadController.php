@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ModuleRole;
-use App\Enums\ModuleStatus;
-use App\Enums\ProjectPhase;
+use App\Enums\ModuleRoleEnum;
+use App\Enums\ModuleStatusEnum;
+use App\Enums\ProjectPhaseEnum;
 use App\Enums\TaskStatusEnum;
 use App\Exports\TemplateExport;
 use App\Models\CurrentProject;
@@ -49,13 +49,13 @@ class BulkUploadController extends Controller
                     ->toArray();
 
                 // module roles
-                $data['column_data']['roles'] = ModuleRole::options();
+                $data['column_data']['roles'] = ModuleRoleEnum::options();
 
                 // project phases
-                $data['column_data']['phases'] = ProjectPhase::options();
+                $data['column_data']['phases'] = ProjectPhaseEnum::options();
 
                 // module statuses
-                $data['column_data']['statuses'] = ModuleStatus::options();
+                $data['column_data']['statuses'] = ModuleStatusEnum::options();
 
                 $data['columns'] = [
                     'title',
@@ -102,7 +102,7 @@ class BulkUploadController extends Controller
 
                 // project phases
                 $data['column_data']['phases'] =
-                    ProjectPhase::options();
+                    ProjectPhaseEnum::options();
 
                 // project modules
                 $data['column_data']['modules'] = 

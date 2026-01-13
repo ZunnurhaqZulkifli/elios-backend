@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Projects\RelationManagers;
 
 use App\Filament\Resources\Modules\ModuleResource;
+use App\Models\Module;
 use Dom\Text;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
@@ -31,6 +32,12 @@ class ModulesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->query(function() {
+                $query = Module::query()
+                    ->where('project_id', '=', $this->ownerRecord->id);
+
+                return $query;
+            })
             ->columns([
                 TextColumn::make('index')
                     ->label('No. ')

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Enums\JobPosition;
-use App\Enums\JobTitle;
+use App\Enums\JobPositionEnum;
+use App\Enums\JobTitleEnum;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,8 +18,8 @@ class IndividualSeeder extends Seeder
             [
                 'name' => 'Zunnurhaq Zulkifli',
                 'display_name' => 'Muhammad Zunnurhaq Bin Zulkilfi',
-                'title' => JobTitle::DEVELOPER,
-                'position' => JobPosition::SENIOR,
+                'title' => JobTitleEnum::DEVELOPER,
+                'position' => JobPositionEnum::SENIOR,
                 'email' => 'zunnur@my-sands.com',
                 'about' => 'Sands Consultant Developer',
                 'phone' => '0134065517',
@@ -35,8 +35,8 @@ class IndividualSeeder extends Seeder
             [
                 'name' => 'Zulfa Zulkifli',
                 'display_name' => 'Zulfajuniadi Bin Zulkifli',
-                'title' => JobTitle::CTO,
-                'position' => JobPosition::SENIOR,
+                'title' => JobTitleEnum::CTO,
+                'position' => JobPositionEnum::SENIOR,
                 'email' => 'zulfa@my-sands.com',
                 'about' => 'Sands Consultant Developer',
                 'phone' => '0192727155',
@@ -52,78 +52,78 @@ class IndividualSeeder extends Seeder
             [
                 'name' => 'Amin Adha',
                 'display_name' => 'Amin Adha Bin Mas ud',
-                'title' => JobTitle::DEVELOPER,
-                'position' => JobPosition::SENIOR,
+                'title' => JobTitleEnum::DEVELOPER,
+                'position' => JobPositionEnum::SENIOR,
                 'email' => 'amin@my-sands.com'
             ],
             [
                 'name' => 'Shahjuhan Samsuri',
                 'display_name' => 'Shahjuhan Samsuri',
-                'title' => JobTitle::MANAGER,
-                'position' => JobPosition::DIRECTOR,
+                'title' => JobTitleEnum::MANAGER,
+                'position' => JobPositionEnum::DIRECTOR,
                 'email' => 'juhan@my-sands.com',
             ],
             [
                 'name' => 'Nuh Salleh',
                 'display_name' => 'Muhammad Nuh Idris Ahmad',
-                'title' => JobTitle::SENIOR,
-                'position' => JobPosition::EXECUTIVE,
+                'title' => JobTitleEnum::SENIOR,
+                'position' => JobPositionEnum::EXECUTIVE,
                 'email' => 'idris@zakat.com.my',
             ],
             [
                 'name' => 'Ahmad Farhan',
                 'display_name' => 'Ahmad Farhan Shagul Hamed',
-                'title' => JobTitle::SENIOR,
-                'position' => JobPosition::EXECUTIVE,
+                'title' => JobTitleEnum::SENIOR,
+                'position' => JobPositionEnum::EXECUTIVE,
                 'email' => 'ahmadfarhan@zakat.com.my',
             ],
             [
                 'name' => 'Syahriel Zulkefli',
                 'display_name' => 'Syahriel Bin Zulkefli',
-                'title' => JobTitle::DEVELOPER,
-                'position' => JobPosition::SENIOR,
+                'title' => JobTitleEnum::DEVELOPER,
+                'position' => JobPositionEnum::SENIOR,
                 'email' => 'syahril@zakat.com.my',
             ],
             [
                 'name' => 'Shafiq Ruslan',
                 'display_name' => 'Mohd Shafiq Ruslan',
-                'title' => JobTitle::DEVELOPER,
-                'position' => JobPosition::JUNIOR,
+                'title' => JobTitleEnum::DEVELOPER,
+                'position' => JobPositionEnum::JUNIOR,
                 'email' => 'shafiqruslan@zakat.com.my',
             ],
             [
                 'name' => 'Muhd Nazeri',
                 'display_name' => 'Muhd Nazeri Darmawi',
-                'title' => JobTitle::DEVELOPER,
-                'position' => JobPosition::JUNIOR,
+                'title' => JobTitleEnum::DEVELOPER,
+                'position' => JobPositionEnum::JUNIOR,
                 'email' => 'nazeri@zakat.com.my',
             ],
             [
                 'name' => 'Zulkifli Basir',
                 'display_name' => 'Zulkifli Basir',
-                'title' => JobTitle::SENIOR,
-                'position' => JobPosition::EXECUTIVE,
+                'title' => JobTitleEnum::SENIOR,
+                'position' => JobPositionEnum::EXECUTIVE,
                 'email' => 'zulbasir@zakat.com.my',
             ],
             [
                 'name' => 'Nurul Iman',
                 'display_name' => 'Nurul Iman',
-                'title' => JobTitle::SENIOR,
-                'position' => JobPosition::EXECUTIVE,
+                'title' => JobTitleEnum::SENIOR,
+                'position' => JobPositionEnum::EXECUTIVE,
                 'email' => 'iman@zakat.com.my',
             ],
             [
                 'name' => 'Nur Shamimi',
                 'display_name' => 'Nur Shamimi',
-                'title' => JobTitle::SENIOR,
-                'position' => JobPosition::EXECUTIVE,
+                'title' => JobTitleEnum::SENIOR,
+                'position' => JobPositionEnum::EXECUTIVE,
                 'email' => 'nur.shamimi@zakat.com.my',
             ],
             [
                 'name' => 'Imran',
                 'display_name' => 'Imran',
-                'title' => JobTitle::SENIOR,
-                'position' => JobPosition::EXECUTIVE,
+                'title' => JobTitleEnum::SENIOR,
+                'position' => JobPositionEnum::EXECUTIVE,
                 'email' => 'imran@zakat.com.my',
             ],
         ];

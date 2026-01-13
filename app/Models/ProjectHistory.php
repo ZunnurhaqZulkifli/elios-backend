@@ -24,4 +24,9 @@ class ProjectHistory extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function historable()
+    {
+        return $this->morphTo();
+    }
 }

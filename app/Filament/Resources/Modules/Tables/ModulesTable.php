@@ -2,13 +2,15 @@
 
 namespace App\Filament\Resources\Modules\Tables;
 
-use App\Models\CurrentProject;
-use App\Models\Module;
+use App\Filament\Tables\Columns\TaskProgressColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\ViewAction;
+use App\Models\CurrentProject;
 use Filament\Tables\Table;
+use App\Models\Module;
 
 class ModulesTable
 {
@@ -63,9 +65,8 @@ class ModulesTable
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
 
-                TextColumn::make('progress')
-                    ->numeric()
-                    ->sortable(),
+                TaskProgressColumn::make('progress_bar')
+                    ->label('Progress'),
 
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -86,7 +87,9 @@ class ModulesTable
             ->filters([
                 //
             ])
+            ->recordAction('view')
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([

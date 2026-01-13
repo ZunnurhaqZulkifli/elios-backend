@@ -28,7 +28,10 @@ class ViewProject extends ViewRecord
                             ->badge()
                             ->disabled()
                             ->label(function ($record) {
-                                return $record->phase->getLabel();
+                                return $record->phase?->getLabel() ?? '-';
+                            })
+                            ->color(function ($record) {
+                                return $record->phase?->getColor() ?? 'secondary';
                             }),
                     ])
                     ->description('Key information about this project')

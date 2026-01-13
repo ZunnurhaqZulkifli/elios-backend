@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\Enums\ModuleRole;
-use App\Enums\ModuleStatus;
-use App\Enums\ProjectPhase;
+use App\Enums\ModuleRoleEnum;
+use App\Enums\ModuleStatusEnum;
+use App\Enums\ProjectPhaseEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
@@ -37,9 +37,9 @@ class Module extends Model
         'created_at'         => 'datetime:Y-m-d H:i:A',
         'updated_at'         => 'datetime',
         'progress'           => 'decimal:2',
-        'status'             => ModuleStatus::class,
-        'role'               => ModuleRole::class,
-        'phase'              => ProjectPhase::class,
+        'status'             => ModuleStatusEnum::class,
+        'role'               => ModuleRoleEnum::class,
+        'phase'              => ProjectPhaseEnum::class,
     ];
 
     public function tasks()
