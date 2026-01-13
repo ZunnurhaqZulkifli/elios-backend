@@ -2,12 +2,13 @@
 
 namespace App\Actions\Tasks;
 
+use App\Actions\Modules\ModuleCalculateProgess;
 use App\Enums\TaskProgressEnum;
+use App\Enums\TaskStatusEnum;
 use App\Models\ProjectHistory;
 use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class TaskAction
 {
@@ -36,10 +37,15 @@ class TaskAction
 			}
 
 			$task->update([
-				'status'    => $data['status'] ?? $task->status,
-				'file_name' => $data['file_name'] ?? null,
-				'progress'  => TaskProgressEnum::fromStatus($data['status']),
+				'status'       => $data['status'] ?? $task->status,
+				'file_name'    => $data['file_name'] ?? null,
+				'progress'     => TaskProgressEnum::fromStatus($data['status']),
+				'is_completed' => $data['status'] === TaskStatusEnum::COMPLETED->value ? true : false,
+				'completed_at' => $data['status'] === TaskStatusEnum::COMPLETED->value ? now() : null,
 			]);
+
+			$project = $task->taskable;
+			ModuleCalculateProgess::excecute($project);
 
 			return $task;
 		});

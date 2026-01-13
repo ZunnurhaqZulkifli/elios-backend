@@ -2,6 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Actions\Modules\ModuleCalculateProgess;
+use App\Enums\ModuleStatusEnum;
+use App\Enums\TaskProgressEnum;
+use App\Enums\TaskStatusEnum;
+use App\Models\Module;
 use App\Models\Project;
 use Illuminate\Console\Command;
 
@@ -27,19 +32,8 @@ class UpdateOverallProgess extends Command
     public function handle()
     {
         $project = Project::find(1);
-
-        $this->calculateModuleProgress($project);
+        ModuleCalculateProgess::excecute($project);
 
         return Command::SUCCESS;
-    }
-
-    public function calculateModuleProgress(Project $project)
-    {
-        foreach($project->modules as $module) {
-            $module->update([
-                'progess' => '',
-            ]);
-        }
-        return 0;
     }
 }

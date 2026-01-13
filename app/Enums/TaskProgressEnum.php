@@ -8,8 +8,8 @@ enum TaskProgressEnum : int
     {
         return match ($status) {
             'new'         => 0,
-            'in_progress' => 20,
-            'discussion'  => 30,
+            'in_progress' => 5,
+            'discussion'  => 20,
             'testing'     => 70,
             'staging'     => 90,
             'completed'   => 100,
