@@ -21,10 +21,10 @@ use Filament\Resources\Pages\ViewRecord;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\FontWeight;
 use Illuminate\Database\Eloquent\Model;
-use Filament\Support\Enums\Width;
 use Illuminate\Support\Facades\Storage;
 use Filament\Schemas\Components\Livewire as FilamentLivewire;
 use Joaopaulolndev\FilamentPdfViewer\Forms\Components\PdfViewerField;
@@ -37,7 +37,6 @@ class ViewTask extends ViewRecord
     {
         return [
             EditAction::make(),
-
 
             Action::make('do-task')
                 ->modalWidth(Width::ScreenExtraLarge)
@@ -225,17 +224,6 @@ class ViewTask extends ViewRecord
                             })
                             ->columns(1)
                             ->columnSpanFull(),
-
-                        // TextEntry::make('progress')
-                        //     ->label('Progress')
-                        //     ->suffix('%')
-                        //     ->badge()
-                        //     ->color(fn($state) => match (true) {
-                        //         $state >= 100  => 'success',
-                        //         $state >= 75   => 'info',
-                        //         $state >= 50   => 'warning',
-                        //         default => 'danger',
-                        //     }),
                     ])
                     ->columns(2)
                     ->columnSpan(2),

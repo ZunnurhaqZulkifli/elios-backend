@@ -19,7 +19,9 @@ class TasksRelationManager extends RelationManager
         return $table
             ->query(function ($query) {
                 $query = Task::query()
-                    ->where('module_id', '=', $this->ownerRecord->id);
+                    ->where('module_id', '=', $this->ownerRecord->id)
+                    ->orderBy('progress', 'asc')
+                    ->orderBy('id', 'asc');
 
                 return $query;
             })

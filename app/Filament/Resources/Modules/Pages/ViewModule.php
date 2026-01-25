@@ -3,7 +3,9 @@
 namespace App\Filament\Resources\Modules\Pages;
 
 use App\Filament\Resources\Modules\ModuleResource;
+use App\Filament\Resources\Projects\ProjectResource;
 use App\Livewire\TaskProgressBar;
+use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\ViewRecord;
@@ -21,6 +23,11 @@ class ViewModule extends ViewRecord
     {
         return [
             EditAction::make(),
+
+            Action::make('view-project')
+                ->label('View Project')
+                ->url(fn () => $this->record->project ? ProjectResource::getUrl('view', ['record' => $this->record->project]) : '#')
+                ->color('primary'),
         ];
     }
 

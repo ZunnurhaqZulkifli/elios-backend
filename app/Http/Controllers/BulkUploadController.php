@@ -77,6 +77,7 @@ class BulkUploadController extends Controller
 
                 // lists of projects
                 $data['column_data']['projects'] = $current_project
+                    ->where('id', $current_project_id)
                     ->pluck('title', 'id')
                     ->toArray();
 

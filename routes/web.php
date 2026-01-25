@@ -1,5 +1,6 @@
 <?php
 
+use App\Filament\Pages\LoginPage;
 use App\Http\Controllers\BulkUploadController;
 use Illuminate\Support\Facades\Route;
 
@@ -7,6 +8,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect('/admin');
 });
+
+Route::get('login', LoginPage::class)->name('login');
 
 Route::group(['prefix' => '/bulk-uploads'], function () {
 
@@ -23,6 +26,4 @@ Route::group(['prefix' => '/bulk-uploads'], function () {
         ->name('bulk-uploads.upload');
 });
 
-// Inertia Routes
-require __DIR__ . '/inertia.php';
 // require __DIR__.'/auth.php';

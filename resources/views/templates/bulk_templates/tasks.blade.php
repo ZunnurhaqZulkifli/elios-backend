@@ -123,7 +123,9 @@
 
     {{-- Example Row --}}
     <tr style="background-color: #e8f5e9;">
-      <td style="padding: 8px; border: 1px solid #ddd;">{{ $data['column_data']['types'] ?? 'App\Models\Project' }}</td>
+      <td style="padding: 8px; border: 1px solid #ddd;">
+        {{ $data['column_data']['types'] ?? 'App\Models\Project' }}
+      </td>
       <td style="padding: 8px; border: 1px solid #ddd;">
         @if(!empty($data['column_data']['projects']))
         {{ array_key_first($data['column_data']['projects']) }}

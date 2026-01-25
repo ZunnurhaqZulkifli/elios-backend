@@ -45,7 +45,7 @@ class ModuleResource extends Resource
 
         return (string) static::$model::whereHas('project', function ($query) use ($currentProejct) {
             if(!$currentProejct) {
-                return;
+                return 0;
             }
 
             $query->where('id', $currentProejct);
@@ -83,13 +83,13 @@ class ModuleResource extends Resource
 
         foreach($model->taskTemplates as $template) {
             $model->tasks()->create([
-                'title' => $template->title,
-                'assigned_by' => null,
-                'due_date' => $data['estimated_duration'],
-                'status' => TaskStatusEnum::NEW,
-                'progress' => 0,
-                'type_id' => 3, // New
-                'level_id' => 2, // Medium
+                'title'        => $template->title,
+                'assigned_by'  => null,
+                'due_date'     => $data['estimated_duration'],
+                'status'       => TaskStatusEnum::NEW,
+                'progress'     => 0,
+                'type_id'      => 3,                             // New
+                'level_id'     => 2,                             // Medium
                 'is_completed' => false,
             ]);
         }
@@ -101,8 +101,8 @@ class ModuleResource extends Resource
     {
         return [
             'index' => ListModules::route('/'),
-            'view' => ViewModule::route('/{record}'),
             'create' => CreateModule::route('/create'),
+            'view' => ViewModule::route('/{record}'),
             'edit' => EditModule::route('/{record}/edit'),
         ];
     }

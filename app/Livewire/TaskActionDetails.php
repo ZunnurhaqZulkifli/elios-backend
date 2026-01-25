@@ -46,7 +46,7 @@ class TaskActionDetails extends Component implements HasForms
                             ->badge(),
                     ]),
 
-                Section::make('Actions')
+                Section::make('Remarks')
                     ->schema([
                         TextEntry::make('remarks')
                             ->default($this->record->remarks)

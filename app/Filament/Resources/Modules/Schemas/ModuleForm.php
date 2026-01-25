@@ -13,8 +13,6 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Operation;
-use Illuminate\Support\Facades\Log;
-use PhpParser\Node\Expr\AssignOp\Mod;
 
 class ModuleForm
 {
@@ -29,7 +27,6 @@ class ModuleForm
                     ->searchable()
                     ->preload()
                     ->relationship('project', 'title')
-                    ->hiddenOn(Operation::Create)
                     ->required(),
 
                 Select::make('type_id')

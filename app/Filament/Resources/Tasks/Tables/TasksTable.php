@@ -2,22 +2,30 @@
 
 namespace App\Filament\Resources\Tasks\Tables;
 
+use App\Actions\Tasks\TaskAction;
 use App\Actions\Tasks\TaskNew;
 use App\Actions\Tasks\TaskTesting;
+use App\Enums\TaskActionTypeEnum;
+use App\Enums\TaskStatusEnum;
 use App\Filament\Tables\Columns\TaskProgressColumn;
 use App\Models\CurrentProject;
-use App\Models\Project;
 use App\Models\Task;
-use Dom\Text;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
-use Filament\Schemas\Components\Livewire;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Section;
+use Filament\Support\Enums\Width;
 use Filament\Tables\Columns\CheckboxColumn;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 
 class TasksTable
 {
@@ -140,6 +148,108 @@ class TasksTable
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
+
+                    Action::make('do-task')
+                        ->modalWidth(Width::ScreenExtraLarge)
+                        ->accessSelectedRecords()
+                        ->label('Do Tasks')
+                        ->schema([
+                            Select::make('status')
+                                ->label('Task Status')
+                                ->options(TaskStatusEnum::options())
+                                ->required(),
+
+                            TextInput::make('file_name')
+                                ->hint('UserController.php'),
+
+                            Section::make('Task Action')
+                                ->schema([
+                                    TextInput::make('action_title')
+                                        ->label('Action Title')
+                                        ->required(),
+
+                                    Select::make('action_type')
+                                        ->label('Action Type')
+                                        ->options(TaskActionTypeEnum::options())
+                                        ->required(),
+
+                                    MarkdownEditor::make('action_remarks')
+                                        ->label('Solution / Action Taken')
+                                        ->required(),
+
+                                    FileUpload::make('action_attachments')
+                                        ->label('Attachments')
+                                        ->disk('public')
+                                        ->directory('task/attachments')
+                                        ->multiple(),
+                                ])
+                                ->columns(1)
+                        ])
+                        ->modalSubmitActionLabel('Submit Task Action')
+                        ->requiresConfirmation()
+                        ->action(function (Collection $records, array $data) {
+
+                            foreach ($records as $record) {
+                                TaskAction::update($record, $data);
+                            }
+
+                            Notification::make()
+                                ->title('Task updated successfully.')
+                                ->success()
+                                ->send();
+                        })
+                        ->icon('heroicon-o-pencil-square'),
+
+                    Action::make('create-bug')
+                        ->modalWidth(Width::ScreenExtraLarge)
+                        ->accessSelectedRecords()
+                        ->label('Do Tasks')
+                        ->schema([
+                            Select::make('status')
+                                ->label('Task Status')
+                                ->options(TaskStatusEnum::options())
+                                ->required(),
+
+                            TextInput::make('file_name')
+                                ->hint('UserController.php'),
+
+                            Section::make('Task Action')
+                                ->schema([
+                                    TextInput::make('action_title')
+                                        ->label('Action Title')
+                                        ->required(),
+
+                                    Select::make('action_type')
+                                        ->label('Action Type')
+                                        ->options(TaskActionTypeEnum::options())
+                                        ->required(),
+
+                                    MarkdownEditor::make('action_remarks')
+                                        ->label('Solution / Action Taken')
+                                        ->required(),
+
+                                    FileUpload::make('action_attachments')
+                                        ->label('Attachments')
+                                        ->disk('public')
+                                        ->directory('task/attachments')
+                                        ->multiple(),
+                                ])
+                                ->columns(1)
+                        ])
+                        ->modalSubmitActionLabel('Submit Task Action')
+                        ->requiresConfirmation()
+                        ->action(function (Collection $records, array $data) {
+
+                            foreach ($records as $record) {
+                                TaskAction::update($record, $data);
+                            }
+
+                            Notification::make()
+                                ->title('Task updated successfully.')
+                                ->success()
+                                ->send();
+                        })
+                        ->icon('heroicon-o-pencil-square'),
                 ]),
             ]);
     }

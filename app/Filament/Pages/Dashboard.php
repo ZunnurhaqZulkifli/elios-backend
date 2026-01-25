@@ -2,22 +2,21 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Resources\Projects\ProjectResource;
+use Filament\Forms\Concerns\InteractsWithForms;
 use App\Filament\Resources\Tasks\TaskResource;
 use App\Filament\Widgets\OutstandingTask;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Schemas\Components\Form;
+use Filament\Forms\Components\Select;
 use App\Filament\Widgets\TodayTask;
-
 use App\Models\CurrentProject;
-use App\Models\Individual;
+use Filament\Schemas\Schema;
+use Filament\Actions\Action;
 use App\Models\Project;
 use App\Models\Task;
 use BackedEnum;
-use Filament\Actions\Action;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Schemas\Components\Form;
-use Filament\Schemas\Schema;
-use Illuminate\Container\Attributes\Auth;
+use Filament\Support\Colors\Color;
 
 class Dashboard extends \Filament\Pages\Dashboard implements HasForms
 {
@@ -68,20 +67,29 @@ class Dashboard extends \Filament\Pages\Dashboard implements HasForms
   public function taskAction(Schema $form): Schema
   {
     return $form
-      ->components([
+      ->schema([
         Form::make()
-          ->schema([
+            ->schema([
               Action::make('create_task')
                 ->label('Create New Task')
                 ->model(TaskResource::getModel())
                 ->fillForm(fn() => [
                     'taskable_type' => 'App\Models\Project',
                     'taskable_id' => CurrentProject::id(),
-                    'pic' => Project::find(CurrentProject::id())->ownerable->members->first()->individual->id,
+                    'pic' => Project::find(CurrentProject::id())->ownerable->members->first()?->individual->id,
                 ])
                 ->schema(fn(Schema $schema) => TaskResource::form($schema))
                 ->action(fn($data) => Task::create($data))
                 ->modalWidth('4xl'),
+
+              Action::make('view_project')
+                ->label('View Project')
+                ->modalWidth('4xl')
+                ->url(fn() => ProjectResource::getUrl('view', [
+                  'record' => CurrentProject::id(),
+                ]))
+                ->color(Color::Orange)
+                ->visible(fn() => CurrentProject::id() !== null),
           ])
           ->columns(2),
       ]);

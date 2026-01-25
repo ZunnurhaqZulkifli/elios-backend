@@ -2,20 +2,22 @@
 
 namespace App\Filament\Resources\Tasks\RelationManagers;
 
-use App\Actions\Modules\ModuleCalculateProgess;
 use App\Actions\Tasks\TaskCalculateProgess;
+use App\Enums\TaskStatusEnum;
 use App\Filament\Resources\Tasks\TaskResource;
 use App\Livewire\TaskActionDetails;
 use App\Livewire\TaskActionDocuments;
 use App\Models\TaskAction;
-use Dom\Text;
 use Filament\Actions\Action;
-use Filament\Actions\CreateAction;
+use Filament\Actions\ActionGroup;
+use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Schemas\Components\Livewire;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class ActionsRelationManager extends RelationManager
 {
@@ -57,6 +59,7 @@ class ActionsRelationManager extends RelationManager
                     ->sortable(),
             ])
             ->recordActions([
+
                 Action::make('view-details')
                     ->label('Details')
                     ->schema(function ($record, $action) {
@@ -84,24 +87,65 @@ class ActionsRelationManager extends RelationManager
                     ->icon('heroicon-o-paper-clip')
                     ->color('secondary'),
 
-                Action::make('delete')
-                    ->label('Delete')
-                    ->requiresConfirmation()
-                    ->action(function(TaskAction $record) {
-                        $record->delete();
+                ActionGroup::make([
+                    Action::make('edit')
+                        ->label('Edit')
+                        ->schema([
+                            Select::make('status')
+                                ->label('Task Status')
+                                ->options(TaskStatusEnum::options())
+                                ->default(fn(TaskAction $record) => $record->task->status)
+                                ->required(),
 
-                        $module = $this->getOwnerRecord()->module;
-                        TaskCalculateProgess::excecute($module);
+                            TextInput::make('title')
+                                ->label('Action Title')
+                                ->default(fn(TaskAction $record) => $record->title)
+                                ->required()
+                                ->maxLength(255),
 
-                        Notification::make()
-                            ->title('Task Action Deleted')
-                            ->success()
-                            ->send();
+                            MarkdownEditor::make('remarks')
+                                ->label('Action Remarks')
+                                ->default(fn(TaskAction $record) => $record->remarks)
+                                ->required(),
+                        ])
+                        ->action(function (TaskAction $record, array $data) {
+                            $record->update($data);
 
-                        $this->js('window.location.reload()');
-                    })
-                    ->icon('heroicon-o-trash')
-                    ->color('danger'),
-            ]);
+                            $record->task->update([
+                                'status' => $data['status'],
+                            ]);
+
+                            TaskCalculateProgess::excecute($this->getOwnerRecord()->module);
+
+                            Notification::make()
+                                ->title('Task Action Updated')
+                                ->success()
+                                ->send();
+
+                            $this->js('window.location.reload()');
+                        })
+                        ->icon('heroicon-o-pencil'),
+
+                    Action::make('delete')
+                        ->label('Delete')
+                        ->requiresConfirmation()
+                        ->action(function (TaskAction $record) {
+                            $record->delete();
+
+                            $module = $this->getOwnerRecord()->module;
+                            TaskCalculateProgess::excecute($module);
+
+                            Notification::make()
+                                ->title('Task Action Deleted')
+                                ->success()
+                                ->send();
+
+                            $this->js('window.location.reload()');
+                        })
+                        ->icon('heroicon-o-trash')
+                        ->color('danger'),
+                ])
+            ])
+            ->recordAction('view-details');
     }
 }

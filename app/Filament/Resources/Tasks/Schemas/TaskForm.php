@@ -15,6 +15,7 @@ use App\Models\TaskType;
 use App\Models\User;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\MorphToSelect;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -69,7 +70,7 @@ class TaskForm
                     ->required()
                     ->columnSpanFull(),
 
-                Textarea::make('remarks')
+                MarkdownEditor::make('remarks')
                     ->columnSpanFull(),
 
                 FileUpload::make('attachments')

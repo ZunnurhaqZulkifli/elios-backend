@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
                 ->defaultSort('created_at', 'asc')
                 ->paginatedWhileReordering(true)
                 // ->reorderable(true)
-                ->paginationPageOptions([10, 50, 100, 'all'])
+                ->paginationPageOptions([30, 80, 100, 'all'])
                 ->emptyStateDescription('No records found')
                 ->columnManagerMaxHeight('500px');
         });
